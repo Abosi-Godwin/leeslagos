@@ -4,6 +4,7 @@ import "./index.css";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
+
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
