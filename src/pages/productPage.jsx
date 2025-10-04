@@ -33,7 +33,10 @@ const ProductPage = () => {
                     <h1 className="text-2xl py-5 text-primary-normal font-bold">
                         {formatCurrency(product.price)}
                     </h1>
-                    <CtaButton text="Buy Now" />
+                    <div className="flex items-center gap-4 py-6">
+                        <CtaButton text="Add to cart" />
+                        <CtaButton text="Buy Now" type="cta" />
+                    </div>
                 </div>
                 <div className="py-6">
                     <div className="flex gap-1.5">

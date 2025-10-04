@@ -29,7 +29,7 @@ const Testimonials = () => {
                 <p>See how our products have made our customers feel.</p>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 py-6 px-3 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 py-6 px-3 md:grid-cols-3">
                 {reviews.map((data, index) => (
                     <Review
                         data={data}

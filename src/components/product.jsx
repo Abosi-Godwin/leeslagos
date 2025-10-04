@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
@@ -8,13 +8,12 @@ import { formatCurrency } from "../utils/currencyFormater";
 import { useWishlist } from "../contexts/wishlist";
 
 const Product = ({ data }) => {
-    const [favorite, setFavorite] = useState(false);
+    const [inWishList, setInWishlist] = useState(false);
     const { dispatch, wishlist } = useWishlist();
-    const inWishList = wishlist.find(wish => wish.id === data.id);
 
     const handleSetFavorite = () => {
-        setFavorite(prev => !prev);
-        if (favorite || inWishList) {
+      
+        if (inWishList) {
             dispatch({ type: "remove", payload: data.id });
             toast.success("Removed from wishlist");
         } else {
@@ -22,10 +21,13 @@ const Product = ({ data }) => {
             toast.success("Added to wishlist");
         }
     };
+    useEffect(() => {
+        setInWishlist(wishlist.find(wish => wish.id === data.id));
+    }, [wishlist]);
     return (
         <div className="p-4 shadow-md shadow-gray-100 rounded-md">
             <div className="flex items-end justify-end pb-3">
-                {favorite || inWishList ? (
+                {inWishList ? (
                     <FaHeart
                         className="text-primary-normal text-2xl"
                         onClick={handleSetFavorite}
