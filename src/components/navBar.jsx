@@ -6,11 +6,14 @@ import { FaBars, FaCartArrowDown, FaHeart } from "react-icons/fa6";
 import Logo from "./logo";
 import BreadCrumbs from "./breadCrumbs";
 import { useWishlist } from "../contexts/wishlist";
+import { useCart } from "../contexts/cart";
 const Navbar = () => {
     const url = useLocation();
     const paths = url.pathname.split("/").filter(item => item);
     const { wishlist } = useWishlist();
+    const { cart } = useCart();
     const totalWishes = wishlist.length;
+    const totalCart = cart.length;
     const [scrolledDown, setScrolledDown] = useState(false);
 
     useEffect(() => {
@@ -45,7 +48,15 @@ const Navbar = () => {
                             <FaHeart />
                         </p>
                     </Link>
-                    <FaCartArrowDown />
+                    <Link to="/cart">
+                        <p className="relative">
+                            <span className="text-sm font-bold font-heading text-white absolute top-0 left-1.5">
+                                {totalCart}
+                            </span>
+
+                            <FaCartArrowDown />
+                        </p>
+                    </Link>
                     <FaBars />
                 </div>
             </nav>

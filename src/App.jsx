@@ -4,9 +4,11 @@ import Home from "./pages/homepage";
 import ProductsPage from "./pages/productsPage";
 import ProductPage from "./pages/productPage";
 import Wishlist from "./pages/wishlist";
+import Cart from "./pages/cart";
 
 import { fetchProduct } from "./utils/fetchProduct";
 import { WishListProvider } from "./contexts/wishlist";
+import { CartProvider } from "./contexts/cart";
 
 const router = createBrowserRouter([
     {
@@ -19,7 +21,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/wishlist",
-        element: <Wishlist />,
+        element: <Wishlist />
+    },
+    {
+        path: "/cart",
+        element: <Cart />
     },
     {
         path: "products/:productId",
@@ -30,14 +36,16 @@ const router = createBrowserRouter([
 
 function App() {
     return (
-        <WishListProvider>
-            <RouterProvider
-                router={router}
-                future={{
-                    v7_startTransition: true
-                }}
-            />
-        </WishListProvider>
+        <CartProvider>
+            <WishListProvider>
+                <RouterProvider
+                    router={router}
+                    future={{
+                        v7_startTransition: true
+                    }}
+                />
+            </WishListProvider>
+        </CartProvider>
     );
 }
 

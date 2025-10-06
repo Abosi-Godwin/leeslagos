@@ -12,6 +12,7 @@ import Logo from "../components/logo";
 import ScrollToTop from "../components/scrollToTop";
 
 const Footer = () => {
+     
     return (
         <footer
             className="py-12 md:px-6 bg-gray-100 flex flex-col items-center
@@ -106,10 +107,11 @@ const Footer = () => {
                 </div>
             </div>
             <p className="pt-4 text-sm text-center">
-                © 2025 Leeslagos Made with ❤️ by Godwin
+                &copy; {new Date().getFullYear()} Leeslagos Made with ❤️
+                by Godwin
             </p>
             <ScrollToTop />
-              <Toaster position="bottom-right" />
+            <Toaster position="bottom-right" />
         </footer>
     );
 };

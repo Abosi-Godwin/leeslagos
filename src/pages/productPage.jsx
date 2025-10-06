@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useLoaderData } from "react-router-dom";
 import { FaCircleCheck } from "react-icons/fa6";
 import { formatCurrency } from "../utils/currencyFormater";
@@ -5,10 +7,27 @@ import Navbar from "../components/navBar";
 import Footer from "../sections/footer";
 import Product from "../components/product";
 import CtaButton from "../components/ctaButton";
+import { useCart } from "../contexts/cart";
 
 const ProductPage = () => {
     const { product, similarItems } = useLoaderData();
+    const { dispatch, cart } = useCart();
+    const [isInCart, setIsInCart] = useState([]);
 
+    const handleAddToCart = data => {
+        if (isInCart) {
+            dispatch({ type: "removeCartItem", payload: data.id });
+            toast.success("Removed from cart");
+        } else {
+            dispatch({ type: "addToCart", payload: data });
+            toast.success("Added to cart");
+        }
+    };
+    useEffect(() => {
+        setIsInCart(cart.find(item => item.id === product.id));
+
+        console.log(isInCart);
+    }, [cart]);
     return (
         <>
             <Navbar />
@@ -34,7 +53,11 @@ const ProductPage = () => {
                         {formatCurrency(product.price)}
                     </h1>
                     <div className="flex items-center gap-4 py-6">
-                        <CtaButton text="Add to cart" />
+                        <CtaButton
+                            data={product}
+                            text={isInCart ? "Added to cart" : "Add to cart"}
+                            handler={handleAddToCart}
+                        />
                         <CtaButton text="Buy Now" type="cta" />
                     </div>
                 </div>
