@@ -13,10 +13,26 @@ const reducerFunc = (state, action) => {
                 return [...state].filter(item => item.id !== action.payload);
             }
             break;
+        case "updateQty":
+            {
+                const itemToUpdate = state.find(
+                    item => item.id === action.payload.id
+                );
+
+                itemToUpdate.quantity = action.payload.numb;
+
+                const otherProducts = state.filter(
+                    item => item.id !== action.payload.id
+                );
+                
+                return [...otherProducts, itemToUpdate];
+            }
+            break;
         case "set":
             return action.payload;
-          
-        default: action.payload
+
+        default:
+            action.payload;
     }
 };
 

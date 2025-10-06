@@ -17,7 +17,11 @@ export default {
                 },
                 accent: {
                     yellow: "#FFB84D" // star rating
-                }
+                },mastercard: "#EB001B",
+        amazonpay: "#FF9900",
+        stripe: "#635BFF",
+        paypal: "#003087",
+        visa: "#1A1F71",
             },
             fontFamily: {
                 sans: ["Outfit", "sans-serif"], // overrides default sans

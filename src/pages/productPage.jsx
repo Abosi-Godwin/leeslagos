@@ -19,15 +19,16 @@ const ProductPage = () => {
             dispatch({ type: "removeCartItem", payload: data.id });
             toast.success("Removed from cart");
         } else {
-            dispatch({ type: "addToCart", payload: data });
+            dispatch({ type: "addToCart", payload: {...data, quantity:1}});
             toast.success("Added to cart");
         }
     };
     useEffect(() => {
         setIsInCart(cart.find(item => item.id === product.id));
-
-        console.log(isInCart);
     }, [cart]);
+    useEffect(() => {
+        setIsInCart(cart.find(item => item.id === product.id));
+    }, []);
     return (
         <>
             <Navbar />
