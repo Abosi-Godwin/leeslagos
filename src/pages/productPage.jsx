@@ -7,28 +7,27 @@ import Navbar from "../components/navBar";
 import Footer from "../sections/footer";
 import Product from "../components/product";
 import CtaButton from "../components/ctaButton";
+
 import { useCart } from "../contexts/cart";
 
 const ProductPage = () => {
     const { product, similarItems } = useLoaderData();
     const { dispatch, cart } = useCart();
-    const [isInCart, setIsInCart] = useState([]);
+    const [isInCart, setIsInCart] = useState(false);
 
     const handleAddToCart = data => {
         if (isInCart) {
             dispatch({ type: "removeCartItem", payload: data.id });
             toast.success("Removed from cart");
         } else {
-            dispatch({ type: "addToCart", payload: {...data, quantity:1}});
+            dispatch({ type: "addToCart", payload: { ...data, quantity: 1 } });
             toast.success("Added to cart");
         }
     };
     useEffect(() => {
-        setIsInCart(cart.find(item => item.id === product.id));
+        setIsInCart(cart.find(item => item?.id === product.id));
     }, [cart]);
-    useEffect(() => {
-        setIsInCart(cart.find(item => item.id === product.id));
-    }, []);
+
     return (
         <>
             <Navbar />

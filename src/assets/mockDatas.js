@@ -1,4 +1,12 @@
-import { FaLock, FaHeadset } from "react-icons/fa6";
+import {
+    FaLock,
+    FaHeadset,
+    
+    
+  
+    FaCertificate,
+    
+} from "react-icons/fa6";
 import { FaShippingFast, FaUndo } from "react-icons/fa";
 export const heroSlides = [
     {
@@ -48,7 +56,6 @@ export const partnersSlides = [
     "./images/partner5.png"
 ];
 
- 
 export const highlights = [
     {
         id: 1,
@@ -117,6 +124,39 @@ export const reviews = [
         rating: 5,
         product: "LeesLagos Automatic Watch",
         review: "Sophisticated design and flawless craftsmanship. It’s now my go-to watch for business meetings and formal events."
+    }
+];
+
+export const trustHighlights = [
+    {
+        id: 1,
+        icon: FaLock,
+        title: "Secure Payment",
+        text: "Your checkout is protected with 100% SSL encryption."
+    },
+    {
+        id: 2,
+        icon: FaShippingFast,
+        title: "Free Shipping",
+        text: "Complimentary delivery across Nigeria on all orders."
+    },
+    {
+        id: 3,
+        icon: FaUndo,
+        title: "Easy Returns",
+        text: "Shop with confidence — 14-day hassle-free returns."
+    },
+    {
+        id: 4,
+        icon: FaCertificate,
+        title: "Authenticity Assured",
+        text: "Every item is certified genuine and carefully curated."
+    },
+    {
+        id: 5,
+        icon: FaHeadset,
+        title: "Dedicated Support",
+        text: "Our team is here to help you, anytime you need us."
     }
 ];
 export const main_products = [

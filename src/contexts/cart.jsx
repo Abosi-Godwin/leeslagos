@@ -21,11 +21,7 @@ const reducerFunc = (state, action) => {
 
                 itemToUpdate.quantity = action.payload.numb;
 
-                const otherProducts = state.filter(
-                    item => item.id !== action.payload.id
-                );
-                
-                return [...otherProducts, itemToUpdate];
+                return [...state];
             }
             break;
         case "set":
