@@ -23,16 +23,21 @@ const Wishlist = () => {
                     ))}
                 </div>
             ) : (
-                <div
-                    className="bg-white px-3 flex items-center justify-center
-                py-6"
-                >
-                    <p className="bg-gray-100 rounded-md p-3 text-center">
-                        There's nothing on your wishlist.
-                        <br />
-                        start exploring
+                <section className="flex flex-col items-center justify-center py-20 text-center">
+                    <FaHeart size={80} className="text-gray-300 mb-6" />
+                    <h2 className="text-2xl font-bold mb-2">
+                        Your wishlist is empty
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                        Save your favorite pieces here and find them whenever
+                        you return.
                     </p>
-                </div>
+                    <Link to="/products">
+                        <button className="px-6 py-3 bg-primary-normal text-white rounded-md shadow-md hover:bg-primary-dark">
+                            Browse Collections
+                        </button>
+                    </Link>
+                </section>
             )}
             <Footer />
         </>
@@ -44,7 +49,6 @@ export default Wishlist;
 const WishItem = ({ item }) => {
     const { wishlist, dispatch } = useWishlist();
     const removeWish = id => {
-        
         dispatch({ type: "remove", payload: id });
         toast.success("Removed from wishlist");
     };

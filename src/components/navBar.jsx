@@ -42,7 +42,9 @@ const Navbar = () => {
                 >
                     <Link to="/wishlist">
                         <p className="relative">
-                            <span className="text-sm font-bold font-heading text-white absolute top-0 left-1.5">
+                            <span className="text-sm font-bold text-center 
+                                bg-neutral-900 w-5 h-5 rounded-full
+                            text-white absolute -top-4 left-1">
                                 {totalWishes}
                             </span>
                             <FaHeart />
@@ -50,7 +52,11 @@ const Navbar = () => {
                     </Link>
                     <Link to="/cart">
                         <p className="relative">
-                            <span className="text-sm font-bold font-heading text-white absolute top-0 left-1.5">
+                            <span
+                                className="text-sm font-bold text-center 
+                                bg-neutral-900 w-5 h-5 rounded-full
+                            text-white absolute -top-4 left-1"
+                            >
                                 {totalCart}
                             </span>
 

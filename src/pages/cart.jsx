@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
     FaTrash,
     FaCcVisa,
@@ -7,7 +8,7 @@ import {
     FaCcAmazonPay,
     FaCcMastercard
 } from "react-icons/fa6";
-
+import { FaShoppingBag } from "react-icons/fa";
 import NavBar from "../components/navBar";
 import Footer from "../sections/footer";
 
@@ -90,10 +91,12 @@ const Cart = () => {
                                                 key={id}
                                                 className="flex flex-col items-center"
                                             >
-                                                <div className="w-14 h-14 flex
+                                                <div
+                                                    className="w-14 h-14 flex
                                                 items-center justify-center
                                                 rounded-full bg-primary-light
-                                                text-white mb-4 shadow-md">
+                                                text-white mb-4 shadow-md"
+                                                >
                                                     <Icon size={24} />
                                                 </div>
                                                 <h3 className="text-lg font-semibold mb-2">
@@ -118,9 +121,22 @@ const Cart = () => {
 export default Cart;
 const EmptyCart = () => {
     return (
-        <div className="bg-gray-50 p-2 rounded-md text-center">
-            <p>Nothing in your cart.</p>
-        </div>
+        <section className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-20 h-20 mb-6 text-gray-400">
+                <FaShoppingBag size={80} />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
+            <p className="text-gray-600 mb-6">
+                Start exploring our collections to find timeless pieces crafted
+                for you.
+            </p>
+          <Link to="/products">
+            
+          <button className="px-6 py-3 bg-primary-normal text-white rounded-md shadow-md hover:bg-primary-dark">
+                Shop New Arrivals
+            </button>
+          </Link>  
+        </section>
     );
 };
 const CartItem = ({ data }) => {
@@ -204,29 +220,3 @@ const CartItem = ({ data }) => {
         </>
     );
 };
-
-/*
-   <div className="flex gap-2">
-                            <button
-                                className="px-1"
-                                onClick={() => handleQtyChangeBtn("increase")}
-                            >
-                                +
-                            </button>
-                            <input
-                                type="number"
-                                value={quantity}
-                                onChange={handleQtyChangeInp}
-                                className="w-6 outline-none rounded-md text-center"
-                            />
-                            <button
-                                className="px-1"
-                                onClick={() => handleQtyChangeBtn("decrease")}
-                            >
-                                -
-                            </button>
-                        </div>
-                        
-
-
-*/
