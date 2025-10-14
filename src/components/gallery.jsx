@@ -45,7 +45,7 @@ const Gallery = () => {
           </div>
         </div>
 
-        <div className="md:w-[40vw] h-full max-h-full md:h-[50vh] rounded-md overflow-hidden">
+        <div className="md:w-[40vw] h-full max-h-full rounded-md overflow-hidden">
           <Swiper
             modules={[A11y, Grid, Navigation]}
             slidesPerView={2}
@@ -72,7 +72,7 @@ const Gallery = () => {
                 <SwiperSlide key={ind}>
                   <img
                     src={data}
-                    className="rounded-md w-full md:h-[25vh]"
+                    className="rounded-md w-full md:h-[45vh]"
                   />
                 </SwiperSlide>
               );

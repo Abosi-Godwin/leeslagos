@@ -17,7 +17,7 @@ const Trending = () => {
                     reaching for right now.
                 </p>
             </div>
-            <div className="grid py-6 px-3 gap-6 grid-cols-1 md:grid-cols-3">
+            <div className="grid py-6 px-3 gap-6 grid-cols-1 md:grid-cols-4">
                 {main_products.slice(9, 15).map(data => (
                     <Product data={data} key={data.id} />
                 ))}
