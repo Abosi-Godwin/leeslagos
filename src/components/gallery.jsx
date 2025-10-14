@@ -9,7 +9,7 @@ const Gallery = () => {
       <p>Real style. Real quality. Real confidence. </p>
 
       <div className="pt-10 grid grid-cols-1 gap-4 md:grid-cols-[3fr_1fr]">
-        <div className="h-dvh relative md:h-[50vh] rounded-md overflow-hidden">
+        <div className="h-dvh relative rounded-md overflow-hidden">
           <video
             width="100%"
             height="100%"

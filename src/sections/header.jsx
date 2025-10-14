@@ -3,7 +3,7 @@ import HeroSection from "../components/heroSection";
 
 const Header = () => {
   return (
-    <header className="h-dvh relative md:h-[50vh]">
+    <header className="h-dvh relative">
       <NavBar />
       <HeroSection />
     </header>
