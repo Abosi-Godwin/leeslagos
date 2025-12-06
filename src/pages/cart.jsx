@@ -18,22 +18,12 @@ import { useCart } from "../contexts/cart";
 import { formatCurrency } from "../utils/currencyFormater";
 import { trustHighlights } from "../assets/mockDatas";
 const Cart = () => {
-  const { cart, dispatch } = useCart();
-  const [subtotal, setSubtotal] = useState(0);
-
+  const { cart, subTotal, dispatch } = useCart();
+  
   const emptyCart = cart?.length === 0;
   const tax = 100;
-  const total = subtotal + tax;
+  const total = subTotal + tax;
 
-  useEffect(() => {
-    setSubtotal(cart.reduce((acc, curr) => acc + curr?.price * curr?.quantity, 0));
-    /*dispatch({
-      type: "updateTotalPrice",
-      payload: subtotal,
-    });*/
-  }, [cart, subtotal, setSubtotal]);
-
-  console.log(cart, subtotal);
   return (
     <>
       <NavBar />
@@ -52,7 +42,7 @@ const Cart = () => {
         <div className="py-8 px-4 bg-gray-100 font-bold">
           <h1 className="text-2xl">Summary </h1>
           <div className="py-4 px-2 text-sm md:w-[50%]">
-            <p>Subtotal: {formatCurrency(subtotal)}</p>
+            <p>subTotal: {formatCurrency(subTotal)}</p>
             <p>Shipping estimate: Free shipping</p>
             <p>Tax: {formatCurrency(tax)}</p>
             <div className="flex  justify-between items-center py-3">
@@ -145,7 +135,7 @@ const CartItem = ({ data }) => {
 
   const [quantity, setQuantity] = useState(data?.quantity);
 
-  const [subTotalPrice, setSubTotalPrice] = useState(0);
+  const [subTotalPrice, setsubTotalPrice] = useState(0);
 
   const handleQtyChangeInp = (element) => {
     setQuantity(+element.target.value);
@@ -167,7 +157,7 @@ const CartItem = ({ data }) => {
   };
 
   useEffect(() => {
-    setSubTotalPrice((prev) => data?.price * quantity);
+    setsubTotalPrice((prev) => data?.price * quantity);
 
     dispatch({
       type: "updateQty",

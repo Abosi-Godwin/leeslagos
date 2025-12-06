@@ -1,39 +1,42 @@
-import { createContext, useEffect, useContext, useReducer } from "react";
+import { createContext, useEffect, useContext, useReducer, useState } from "react";
 import { setItem, getItem } from "../utils/localStorage";
 
 const reducerFunc = (state, action) => {
   switch (action.type) {
     case "addToCart":
       {
-        return [...state, action.payload];
+        return { cart: [...state.cart, action.payload], subTotal: state.subTotal };
       }
       break;
     case "removeCartItem":
       {
-        return [...state].filter((item) => item.id !== action.payload);
+        return {
+          cart: [...state.cart].filter((item) => item.id !== action.payload),
+          subTotal: state.subTotal,
+        };
       }
       break;
     case "updateQty":
       {
-        const itemToUpdate = state.find((item) => item.id === action.payload.id);
+        const itemToUpdate = state.cart.find((item) => item.id === action.payload.id);
 
         itemToUpdate.quantity = action.payload.numb;
 
-        return [...state];
+        return { cart: [...state.cart], subTotal: state.subTotal };
       }
       break;
     case "updateTotalPrice":
       {
-        const data = action.payload;
-        console.log(data);
-        return [...state];
+        const data = [...state.cart].reduce((acc, curr) => acc + curr?.price * curr?.quantity, 0);
+
+        return { cart: state.cart, subTotal: data };
       }
       break;
     case "set":
-      return action.payload;
+      return { cart: [...action.payload], subTotal: 0 };
 
     default:
-      action.payload;
+      return { cart: [...state.cart], subTotal: state.subTotal };
   }
 };
 
@@ -41,11 +44,14 @@ const CartContext = createContext();
 const useCart = () => useContext(CartContext);
 
 const CartProvider = ({ children }) => {
-  const [cart, dispatch] = useReducer(reducerFunc, []);
+  const initialState = {
+    cart: [],
+    subTotal: 0,
+  };
+  const [{ cart, subTotal }, dispatch] = useReducer(reducerFunc, initialState);
 
   useEffect(() => {
     const savedCartItems = getItem("cart");
-
     if (savedCartItems?.length >= 1) {
       dispatch({ type: "set", payload: savedCartItems });
     }
@@ -53,9 +59,12 @@ const CartProvider = ({ children }) => {
 
   useEffect(() => {
     setItem("cart", cart);
+    dispatch({ type: "updateTotalPrice" });
   }, [cart]);
-
-  return <CartContext.Provider value={{ cart, dispatch }}>{children}</CartContext.Provider>;
+   
+  return (
+    <CartContext.Provider value={{ cart, subTotal, dispatch }}>{children}</CartContext.Provider>
+  );
 };
 
 export { CartProvider, useCart };

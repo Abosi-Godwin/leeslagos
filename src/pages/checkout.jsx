@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../contexts/auth";
 import { useCart } from "../contexts/cart";
 import { formatCurrency } from "../utils/currencyFormater";
+
 import NavBar from "../components/navBar.jsx";
 import Footer from "../sections/footer.jsx";
 
@@ -12,7 +13,7 @@ import Button from "../components/button";
 const Checkout = () => {
   const { register } = useForm();
   const { auth } = useAuth();
-  const { cart } = useCart();
+  const { cart, subTotal } = useCart();
 
   const { email, displayName } = auth?.currentUser;
 
@@ -65,8 +66,8 @@ const Checkout = () => {
               className="outline-0 border rounded-md p-3 w-full"
             ></textarea>
           </div>
-          <div className="">
-            <h1 className="text-xl font-semibold mb-4">Order Summary</h1>
+          <div>
+            <h1 className="font-extrabold mb-4">Order Summary</h1>
             <div className="overflow-scroll">
               <table
                 cellSpacing="5"
@@ -74,7 +75,7 @@ const Checkout = () => {
               >
                 <thead className="border-b-2 border-gray-50 py-2">
                   <tr>
-                    <th>Image</th>
+                    <th className="px-2">Image</th>
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Price</th>
@@ -102,22 +103,53 @@ const Checkout = () => {
                 <tfoot>
                   <tr>
                     <th colSpan="3">Total:</th>
-                    <td>$400</td>
+                    <td>{formatCurrency(subTotal)}</td>
                   </tr>
                 </tfoot>
               </table>
             </div>
           </div>
-          <div>
-            <h1>Payment method</h1>
-            <input
-              type="radio"
-              id="card"
-              name="paymentMethod"
-              value="card"
-            />
-            <label htmlFor="card">Card</label>
-          </div>
+
+          <ul className="pt-2 flex flex-col justify-start items-start gap-1">
+            <h1 className="font-extrabold">Payment method</h1>
+            <li className="flex justify-evenly items-center gap-3">
+              <input
+                type="radio"
+                id="card"
+                name="paymentMethod"
+                value="card"
+              />
+              <label htmlFor="card">Card</label>
+            </li>
+            <li className="flex justify-evenly items-center gap-3">
+              <input
+                type="radio"
+                id="transfer"
+                name="paymentMethod"
+                value="transfer"
+              />
+              <label htmlFor="transfer">Direct Bank Transer</label>
+            </li>
+            <li className="flex justify-evenly items-center gap-3">
+              <input
+                type="radio"
+                id="ussd"
+                name="paymentMethod"
+                value="ussd"
+              />
+              <label htmlFor="ussd">Pay with USSD</label>
+            </li>
+            <li className="flex justify-evenly items-center gap-3">
+              <input
+                type="radio"
+                id="paystack"
+                name="paymentMethod"
+                value="paystack"
+              />
+              <label htmlFor="paystack">PayStack</label>
+            </li>
+          </ul>
+          <Button text="Order Now" type="submit"/>
         </form>
       </div>
       <Footer />
