@@ -27,8 +27,13 @@ const Cart = () => {
 
   useEffect(() => {
     setSubtotal(cart.reduce((acc, curr) => acc + curr?.price * curr?.quantity, 0));
-  }, [cart, setSubtotal]);
+    /*dispatch({
+      type: "updateTotalPrice",
+      payload: subtotal,
+    });*/
+  }, [cart, subtotal, setSubtotal]);
 
+  console.log(cart, subtotal);
   return (
     <>
       <NavBar />
@@ -72,10 +77,12 @@ const Cart = () => {
               </div>
             </div>
             <p className="text-xl font-bold py-4">Total: {formatCurrency(total)}</p>
-            <CtaButton
-              type="cta"
-              text="Secure checkout"
-            />
+            <Link to="/checkout">
+              <CtaButton
+                type="cta"
+                text="Secure checkout"
+              />
+            </Link>
             <div
               className="flex justify-between items-center p-2
                         rounded-md bg-white my-4 text-2xl md:w-[50%] m-[0_auto]"
@@ -88,7 +95,7 @@ const Cart = () => {
             </div>
           </div>
           <section className="py-12 bg-gray-50 rounded-md">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 py-4 text-center">
               {trustHighlights.map(({ id, icon: Icon, title, text }) => (
                 <div
                   key={id}
@@ -98,12 +105,12 @@ const Cart = () => {
                     className="w-14 h-14 flex
                                                 items-center justify-center
                                                 rounded-full bg-primary-light
-                                                text-white mb-4 shadow-md"
+                                                text-primary-dark mb-4"
                   >
                     <Icon size={24} />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{title}</h3>
-                  <p className="text-sm text-gray-600">{text}</p>
+                  <p className="text-sm font-light px-10">{text}</p>
                 </div>
               ))}
             </div>

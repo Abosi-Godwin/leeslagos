@@ -29,8 +29,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`flex justify-between p-4 items-center
-                shadow-gray-100 h-[10%] text-heading top-0 left-0 z-50
+        className={`flex justify-between p-4 items-center shadow-gray-100 h-[10%] text-heading top-0 left-0 z-50
                 transition-all duration-200 fixed ${
                   scrolledDown ? "bg-neutral-50" : ""
                 } w-screen md:h-[2vh]`}
@@ -48,7 +47,7 @@ const Navbar = () => {
                             text-white absolute -top-4 left-1"
               >
                 {totalWishes}
-              </span>
+              </span> 
               <FaHeart />
             </p>
           </Link>
@@ -65,7 +64,8 @@ const Navbar = () => {
               <FaCartArrowDown />
             </p>
           </Link>
-          <FaBars className="md:hidden"/>
+
+          <FaBars className="md:hidden" />
         </div>
       </nav>
       {paths.length > 0 && <BreadCrumbs paths={paths} />}

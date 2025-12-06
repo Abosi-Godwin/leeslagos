@@ -16,7 +16,7 @@ const Gallery = () => {
             muted={true}
             loop={true}
             autoPlay
-            className="absolute top-0 left-0 object-cover -z-10 h-[85vh]"
+            className="absolute top-0 left-0 object-cover h-full -z-10 md:h-[85vh]"
           >
             <source
               src="/1750285145.mp4"
