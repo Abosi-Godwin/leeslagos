@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../contexts/auth";
 import { useCart } from "../contexts/cart";
 import { formatCurrency } from "../utils/currencyFormater";
+import { usePayStack } from "../hooks/usePayStack";
 
 import NavBar from "../components/navBar.jsx";
 import Footer from "../sections/footer.jsx";
@@ -11,21 +12,38 @@ import Input from "../components/input";
 import Button from "../components/button";
 
 const Checkout = () => {
-  const { register } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { error },
+  } = useForm();
+
   const { auth } = useAuth();
   const { cart, subTotal } = useCart();
+  const { checkoutOrderFun } = usePayStack();
+  const { email, displayName, uid: userId } = auth?.currentUser;
 
-  const { email, displayName } = auth?.currentUser;
+  const handleCheckout = (userDetails) => {
+    const { email, fullName, phoneNumber, street, note } = userDetails;
 
+    //const orderedItems = cart.map((data) => data.name);
+
+    checkoutOrderFun({ ...userDetails, subTotal, userId,  orderedItems :cart });
+  };
   return (
     <>
       <NavBar />
       <div className="py-10">
         <h1 className="w-4/5 m-[0_auto]  text-xl font-bold">Billing details</h1>
 
-        <form className="w-4/5 m-[0_auto] py-5 grid grid-cols-1 gap-4 items-center justify-center">
+        <form
+          className="w-4/5 m-[0_auto] py-5 grid grid-cols-1 gap-4
+        items-center justify-center"
+          onSubmit={handleSubmit(handleCheckout)}
+        >
           <Input
             label="Full name *"
+            valType="fullName"
             inputType="text"
             placeholder="Enter your full name..."
             className="p-3 rounded-md outline-0 border"
@@ -35,6 +53,7 @@ const Checkout = () => {
           />
           <Input
             label="Email address *"
+            valType="email"
             inputType="email"
             placeholder="Enter your email address..."
             className="p-3 rounded-md outline-0 border"
@@ -44,6 +63,7 @@ const Checkout = () => {
           />
           <Input
             label="Street address *"
+            valType="street"
             inputType="text"
             placeholder="Enter your current address..."
             className="p-3 rounded-md outline-0 border"
@@ -52,6 +72,7 @@ const Checkout = () => {
           />
           <Input
             label="Phone Number"
+            valType="phoneNumber"
             inputType="number"
             placeholder="Enter your phone number..."
             className="p-3 rounded-md outline-0 border"
@@ -64,6 +85,7 @@ const Checkout = () => {
               placeholder="Write a small note or description..."
               rows="5"
               className="outline-0 border rounded-md p-3 w-full"
+              {...register("note", {})}
             ></textarea>
           </div>
           <div>
@@ -110,46 +132,10 @@ const Checkout = () => {
             </div>
           </div>
 
-          <ul className="pt-2 flex flex-col justify-start items-start gap-1">
-            <h1 className="font-extrabold">Payment method</h1>
-            <li className="flex justify-evenly items-center gap-3">
-              <input
-                type="radio"
-                id="card"
-                name="paymentMethod"
-                value="card"
-              />
-              <label htmlFor="card">Card</label>
-            </li>
-            <li className="flex justify-evenly items-center gap-3">
-              <input
-                type="radio"
-                id="transfer"
-                name="paymentMethod"
-                value="transfer"
-              />
-              <label htmlFor="transfer">Direct Bank Transer</label>
-            </li>
-            <li className="flex justify-evenly items-center gap-3">
-              <input
-                type="radio"
-                id="ussd"
-                name="paymentMethod"
-                value="ussd"
-              />
-              <label htmlFor="ussd">Pay with USSD</label>
-            </li>
-            <li className="flex justify-evenly items-center gap-3">
-              <input
-                type="radio"
-                id="paystack"
-                name="paymentMethod"
-                value="paystack"
-              />
-              <label htmlFor="paystack">PayStack</label>
-            </li>
-          </ul>
-          <Button text="Order Now" type="submit"/>
+          <Button
+            text="Proceed to pay"
+            type="submit"
+          />
         </form>
       </div>
       <Footer />

@@ -6,6 +6,7 @@ import ProductPage from "./pages/productPage";
 import Wishlist from "./pages/wishlist";
 import Cart from "./pages/cart";
 import Checkout from "./pages/checkout";
+import OrderSummary from "./pages/orderSummary";
 import Signup from "./pages/signup";
 import Login from "./pages/login";
 
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/ordered",
+    element: (
+      <ProtectedPages>
+        <OrderSummary />,
+      </ProtectedPages>
+    ),
+  },
+  {
     path: "/signup",
     element: (
       <AuthRedirect>
@@ -52,10 +61,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <AuthRedirect>
-      
-    <Login />,
-    </AuthRedirect> 
+    element: (
+      <AuthRedirect>
+        <Login />,
+      </AuthRedirect>
+    ),
   },
   {
     path: "products/:productId",

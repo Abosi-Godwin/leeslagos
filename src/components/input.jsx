@@ -4,6 +4,7 @@ import InputLabel from "./inputLabel";
 
 export default function Input({
   label,
+  valType,
   placeholder,
   inputType,
   disable,
@@ -23,13 +24,13 @@ export default function Input({
       />
 
       <input
-        id={label}
+        id={valType}
         type={inputType}
         placeholder={placeholder}
         disabled={disable}
         className={className}
         defaultValue={defaultVal}
-        {...register(label)}
+        {...register(valType)}
       />
     </>
   );

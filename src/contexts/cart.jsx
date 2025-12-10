@@ -32,6 +32,8 @@ const reducerFunc = (state, action) => {
         return { cart: state.cart, subTotal: data };
       }
       break;
+    case "clear":
+      return { cart: [], subTotal: 0 };
     case "set":
       return { cart: [...action.payload], subTotal: 0 };
 
