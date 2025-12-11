@@ -22,10 +22,13 @@ export const createOrderDetails = (userDetails) => {
 
   const [firstname, lastname] = fullName.split(" ");
 
+  const currentDate = new Date().toLocaleString();
+  
   return {
     key: paystackKey,
     email,
     amount: subTotal * 100,
+    date: currentDate,
     ref: uuidv4(),
     currency: "NGN",
     firstname,

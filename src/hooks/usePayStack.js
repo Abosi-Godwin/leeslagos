@@ -27,28 +27,19 @@ export function usePayStack() {
 
     const orderDetails = createOrderDetails({ ...userDetails, onSuccess, onClose });
     if (orderDetails.ref) {
-      const {
+      const { ref, amount, email, date, firstname, lastname, phone, metadata } = orderDetails;
+
+      orderDatas = {
         ref,
         amount,
         email,
-        firstname,
-        lastname,
-        phone,
-        metadata,
-      
-      } = orderDetails;
-
-      orderDatas = {
-       ref,
-        amount,
-        email,
+        date,
         firstname,
         lastname,
         phone,
         metadata,
       };
     }
-
     checkoutFun(orderDetails);
   };
 

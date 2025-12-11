@@ -9,32 +9,28 @@ import Button from "../components/button";
 
 function OrderSummary() {
   const location = useLocation();
-  const { reference, status, message, customerAndOrderDatas } = location.state || {};
-  const { ref, amount, email, firstname, lastname, phone, metadata } =
-  customerAndOrderDatas || {};
-  const { orderId, customerId, cartItems, shippingAddress, extraNotes } =
-  metadata || {};
-  const totalCart = cartItems.length;
+  const { reference, status, message, customerAndOrderDatas } = location?.state || {};
+  const { ref, amount, date, email, firstname, lastname, phone, metadata } =
+    customerAndOrderDatas || {};
+  const { orderId, customerId, cartItems, shippingAddress, extraNotes } = metadata || {};
+  const totalCart = cartItems?.length || [];
   return (
     <>
       <NavBar />
       <div className=" py-10 px-5">
-        <div className="rounded-md w-[90%] bg-primary-light m-[0_auto] py-8 ">
+        <div className="rounded-md bg-gray-100 m-[0_auto] py-8 ">
           <div
             className="h-32 w-32
        [clip-path:polygon(50%_0%,83%_12%,100%_43%,94%_78%,68%_100%,32%_100%,6%_78%,0%_43%,17%_12%)]
-        bg-primary-dark m-[0_auto] flex items-center
+        bg-white m-[0_auto] flex items-center
         justify-center"
           >
-            <FaCheck className="text-neutral-50 text-7xl m-[0_auto]" />
+            <FaCheck className="text-green-500 text-7xl m-[0_auto]" />
           </div>
-          <h1
-            className="m-[0_auto] text-xl font-bold text-primary-dark
-            text-center py-4"
-          >
+          <h1 className="m-[0_auto] text-xl font-bold text-center py-4">
             Order Placed Successfully!
           </h1>
-          <p className="text-sm tracking-tight text-center text-primary-dark">
+          <p className="text-sm tracking-tight text-center">
             Thank you for shopping with LeesLagos. Your order has been received and is now being
             processed.
           </p>
@@ -64,7 +60,7 @@ function OrderSummary() {
             <div className="flex">
               <h1>
                 Date:
-                <span> Dec 9, 2025</span>
+                <span> {date}</span>
               </h1>
             </div>
           </div>
@@ -157,8 +153,8 @@ function OrderSummary() {
             </h1>
           </div>
         </div>
-        <div className="py-4 flex justify-between gap-0 items-center">
-          <Link to="trackOrder">
+        <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
+          <Link to="/trackOrder">
             <Button
               type="btn"
               text="Track Order"
@@ -169,6 +165,7 @@ function OrderSummary() {
           <Link to="/products">
             <Button
               type="btn"
+              btn="secondary"
               text="Continue Shopping"
               loading={false}
             />

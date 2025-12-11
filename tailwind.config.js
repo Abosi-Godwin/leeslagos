@@ -28,9 +28,7 @@ export default {
                 sans: ["Outfit", "sans-serif"],
                 heading: ["Playfair Display", "serif"]
             },
-  clipPath: {
-    customPolygon: "polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%)",
-  },
+  
 
         }
     },
