@@ -26,8 +26,6 @@ const Checkout = () => {
   const handleCheckout = (userDetails) => {
     const { email, fullName, phoneNumber, street, note } = userDetails;
 
-    //const orderedItems = cart.map((data) => data.name);
-
     checkoutOrderFun({ ...userDetails, subTotal, userId,  orderedItems :cart });
   };
   return (
@@ -90,6 +88,8 @@ const Checkout = () => {
           </div>
           <div>
             <h1 className="font-extrabold mb-4">Order Summary</h1>
+            
+            
             <div className="overflow-scroll">
               <table
                 cellSpacing="5"
