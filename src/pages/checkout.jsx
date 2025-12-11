@@ -90,7 +90,7 @@ const Checkout = () => {
             <h1 className="font-extrabold mb-4">Order Summary</h1>
             
             
-            <div className="overflow-scroll">
+            <div className="overflow-scroll  no-scrollbar">
               <table
                 cellSpacing="5"
                 className="w-96 border-separate border-spacing-y-4 m-[0_auto] border border-gray-50 overflow-scroll"

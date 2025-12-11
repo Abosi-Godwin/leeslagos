@@ -10,8 +10,10 @@ import Button from "../components/button";
 function OrderSummary() {
   const location = useLocation();
   const { reference, status, message, customerAndOrderDatas } = location.state || {};
-  const { ref, amount, email, firstname, lastname, phone, metadata } = customerAndOrderDatas;
-  const { orderId, customerId, cartItems, shippingAddress, extraNotes } = metadata;
+  const { ref, amount, email, firstname, lastname, phone, metadata } =
+  customerAndOrderDatas || {};
+  const { orderId, customerId, cartItems, shippingAddress, extraNotes } =
+  metadata || {};
   const totalCart = cartItems.length;
   return (
     <>
@@ -73,11 +75,11 @@ function OrderSummary() {
             Ordered {totalCart >= 2 ? "items" : "item"} ({totalCart})
           </h1>
 
-          <div className="overflow-scroll">
+          <div className="overflow-scroll  no-scrollbar">
             <table
               cellSpacing="5"
               className="w-96 border-separate border-spacing-y-4 m-[0_auto]
-              border border-gray-50 overflow-y-auto no-scrollbar"
+              border border-gray-50"
             >
               <thead className="border-b-2 border-gray-50 py-2">
                 <tr>
