@@ -1,11 +1,15 @@
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { createOrderDetails } from "../utils/createOrderDetails";
+import { createDbDatas } from "../utils/createDbDatas";
 import { checkoutFun } from "../utils/checkout";
-let orderDatas = null;
+import { useFireStore } from "./useFireStore";
 
+let orderDatas = null;
 export function usePayStack() {
   const navigate = useNavigate();
+
+  const { addOrders } = useFireStore();
 
   const onClose = () => {
     toast.success("Payment cancelled.");
@@ -22,10 +26,14 @@ export function usePayStack() {
             customerAndOrderDatas: orderDatas,
           },
         });
+        
+        const docDatas = createDbDatas(userDetails, orderDatas);
+        addOrders(docDatas);
       }
     };
 
     const orderDetails = createOrderDetails({ ...userDetails, onSuccess, onClose });
+
     if (orderDetails.ref) {
       const { ref, amount, email, date, firstname, lastname, phone, metadata } = orderDetails;
 
