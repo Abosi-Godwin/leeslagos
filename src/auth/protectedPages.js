@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { useAuth } from "../contexts/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -16,8 +15,8 @@ export const ProtectedPages = ({ children }) => {
       navigate("/login", {
         replace: true,
       });
-    }  
-  }, [isAuthenticated, loading, navigate]);
+    }
+  }, [isAuthenticated, loading]);
 
   return isAuthenticated && children;
 };

@@ -6,6 +6,7 @@ import ProductPage from "./pages/productPage";
 import Wishlist from "./pages/wishlist";
 import Cart from "./pages/cart";
 import Checkout from "./pages/checkout";
+import TrackOrder from "./pages/trackOrder";
 import OrderSummary from "./pages/orderSummary";
 import Signup from "./pages/signup";
 import Login from "./pages/login";
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedPages>
         <OrderSummary />,
+      </ProtectedPages>
+    ),
+  },
+  {
+    path: "/trackOrder",
+    element: (
+      <ProtectedPages>
+        <TrackOrder />,
       </ProtectedPages>
     ),
   },

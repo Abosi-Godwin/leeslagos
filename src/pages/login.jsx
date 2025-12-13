@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
 import { Toaster } from "react-hot-toast";
+
+
 import { logInApi } from "../auth/login";
+
 import Footer from "../sections/footer";
 import NavBar from "../components/navBar";
 import Input from "../components/input";
@@ -20,11 +22,9 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleLogin = async (enteredInfos) => {
+  const handleLogin = (enteredInfos) => {
     const { email, password } = enteredInfos;
-    const loggedInData = await logInApi(email, password);
-
-    console.log(loggedInData);
+    logInApi(email, password);
   };
 
   const handleHidePassword = () => {
@@ -46,6 +46,7 @@ const Login = () => {
           <form onSubmit={handleSubmit(handleLogin)}>
             <div className="flex flex-col gap-3 py-3">
               <Input
+                valType="email"
                 label="email"
                 inputType="email"
                 placeholder="Enter your email..."
@@ -58,6 +59,7 @@ const Login = () => {
                 inputType={hidePassword ? "password" : "text"}
                 placeholder="Enter your password..."
                 label="password"
+                valType="password"
                 className="p-3 rounded-md outline-0 border"
                 disable={false}
                 onHidePassword={handleHidePassword}

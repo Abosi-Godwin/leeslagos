@@ -6,6 +6,7 @@ import { formatCurrency } from "../utils/currencyFormater";
 import NavBar from "../components/navBar";
 import Footer from "../sections/footer";
 import Button from "../components/button";
+import OrderedItems from "../components/orderedItems";
 
 function OrderSummary() {
   const location = useLocation();
@@ -17,7 +18,7 @@ function OrderSummary() {
   return (
     <>
       <NavBar />
-      <div className=" py-10 px-5">
+      <div className="py-10 px-5">
         <div className="rounded-md bg-gray-100 m-[0_auto] py-8 ">
           <div
             className="h-32 w-32
@@ -70,42 +71,7 @@ function OrderSummary() {
           <h1 className="text-xl font-semibold">
             Ordered {totalCart >= 2 ? "items" : "item"} ({totalCart})
           </h1>
-
-          <div className="overflow-scroll  no-scrollbar">
-            <table
-              cellSpacing="5"
-              className="w-96 border-separate border-spacing-y-4 m-[0_auto]
-              border border-gray-50"
-            >
-              <thead className="border-b-2 border-gray-50 py-2">
-                <tr>
-                  <th className="px-2">Image</th>
-                  <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y-2 divide-y-gray-100 py-6">
-                {cartItems.map((data) => (
-                  <tr
-                    key={data.id}
-                    className="bg-white rounded-xl shadow-sm"
-                  >
-                    <td className="p-2">
-                      <img
-                        className="size-8"
-                        src={data.image}
-                      />
-                    </td>
-                    <td className="text-sm p-2">{data.name}</td>
-                    <td className="p-2">{data.quantity}</td>
-                    <td className="p-2">{formatCurrency(data.price)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <OrderedItems items={cartItems} />
           <div className="py-5">
             <h1 className="font-bold">
               Subtotal: <span className="font-normal">{formatCurrency(amount / 100)}</span>
