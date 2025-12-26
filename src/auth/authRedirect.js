@@ -10,11 +10,11 @@ export const AuthRedirect = ({ children }) => {
 
     useEffect(() => {
         if (!loading && isAuthenticated) {
-            navigate("/", {
+            navigate("/cart", {
                 replace: true
             });
         }
     }, [isAuthenticated, loading, navigate]);
 
-    return !isAuthenticated && children;
+    return !loading && !isAuthenticated && children;
 };

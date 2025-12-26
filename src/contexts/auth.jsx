@@ -6,25 +6,26 @@ const AuthContext = createContext();
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
 
     const auth = getAuth();
 
     useEffect(() => {
-        setLoading(true);
+     //   setLoading(true);
         const unsubscribe = onAuthStateChanged(auth, user => {
             if (user) {
                 setUser(user);
+            } else {
+                setUser(null);
             }
+            setLoading(false);
         });
-        setLoading(false);
-        
-        
+
         return () => unsubscribe();
     }, [auth]);
 
-    const isAuthenticated = user?.uid;
+    const isAuthenticated = Boolean(user?.uid);
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, auth, user, loading }}>

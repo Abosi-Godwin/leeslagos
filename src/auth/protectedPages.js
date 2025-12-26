@@ -17,5 +17,5 @@ export const ProtectedPages = ({ children }) => {
         }
     }, [isAuthenticated, loading]);
 
-    return isAuthenticated && children;
+    return !loading && isAuthenticated && children;
 };

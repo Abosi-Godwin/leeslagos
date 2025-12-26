@@ -1,76 +1,99 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 
-import { FaBars, FaCartArrowDown, FaHeart } from "react-icons/fa6";
+import { FaBars, FaX, FaCartArrowDown, FaHeart } from "react-icons/fa6";
 
 import Logo from "./logo";
 import BreadCrumbs from "./breadCrumbs";
 import { useWishlist } from "../contexts/wishlist";
 import { useCart } from "../contexts/cart";
 const Navbar = () => {
-  const url = useLocation();
-  const paths = url.pathname.split("/").filter((item) => item);
-  const { wishlist } = useWishlist();
-  const { cart } = useCart();
-  const totalWishes = wishlist.length;
-  const totalCart = cart.length;
-  const [scrolledDown, setScrolledDown] = useState(false);
+    const [openMenu, setOpenMenu] = useState(false);
 
-  useEffect(() => {
-    const getScrolled = () => {
-      const scrollPosition = window.scrollY;
-      setScrolledDown(scrollPosition > 50);
+    const url = useLocation();
+    const paths = url.pathname.split("/").filter(item => item);
+    const { wishlist } = useWishlist();
+    const { cart } = useCart();
+    const totalWishes = wishlist.length;
+    const totalCart = cart.length;
+    const [scrolledDown, setScrolledDown] = useState(false);
+
+    useEffect(() => {
+        const getScrolled = () => {
+            const scrollPosition = window.scrollY;
+            setScrolledDown(scrollPosition > 50);
+        };
+
+        window.addEventListener("scroll", getScrolled);
+
+        return () => window.removeEventListener("scroll", getScrolled);
+    }, []);
+
+    const handleMenu = () => {
+        setOpenMenu(option => !option);
+        // console.log(openMenu);
     };
 
-    window.addEventListener("scroll", getScrolled);
-
-    return () => window.removeEventListener("scroll", getScrolled);
-  }, []);
-  return (
-    <>
-      <nav
-        className={`flex justify-between p-4 items-center shadow-gray-100 h-[10%] text-heading top-0 left-0 z-50
+    return (
+        <>
+            <nav
+                className={`flex justify-between p-4 items-center shadow-gray-100 text-heading top-0 left-0 z-50
                 transition-all duration-200 fixed ${
-                  scrolledDown ? "bg-neutral-50" : ""
+                    scrolledDown ? "bg-neutral-50" : ""
                 } w-screen md:h-[2vh]`}
-      >
-        <Logo location="header" />
-        <div
-          className="flex gap-10 items-center text-2xl
+            >
+                <Logo location="header" />
+                <div
+                    className="flex gap-10 items-center text-2xl
                 text-neutral-900"
-        >
-          <Link to="/wishlist">
-            <p className="relative">
-              <span
-                className="text-sm font-bold text-center 
+                >
+                    <Link to="/wishlist">
+                        <p className="relative">
+                            <span
+                                className="text-sm font-bold text-center 
                                 bg-neutral-900 w-5 h-5 rounded-full
                             text-white absolute -top-4 left-1"
-              >
-                {totalWishes}
-              </span> 
-              <FaHeart />
-            </p>
-          </Link>
-          <Link to="/cart">
-            <p className="relative">
-              <span
-                className="text-sm font-bold text-center 
+                            >
+                                {totalWishes}
+                            </span>
+                            <FaHeart />
+                        </p>
+                    </Link>
+                    <Link to="/cart">
+                        <p className="relative">
+                            <span
+                                className="text-sm font-bold text-center 
                                 bg-neutral-900 w-5 h-5 rounded-full
                             text-white absolute -top-4 left-1"
-              >
-                {totalCart}
-              </span>
+                            >
+                                {totalCart}
+                            </span>
 
-              <FaCartArrowDown />
-            </p>
-          </Link>
+                            <FaCartArrowDown />
+                        </p>
+                    </Link>
 
-          <FaBars className="md:hidden" />
-        </div>
-      </nav>
-      {paths.length > 0 && <BreadCrumbs paths={paths} />}
-    </>
-  );
+                    <button
+                        className="md:hidden p-1.5 ring-1 ring-gray-100
+                    rounded-md"
+                        onClick={handleMenu}
+                    >
+                        {openMenu ? <FaX /> : <FaBars />}
+                    </button>
+                </div>
+            </nav>
+            {paths.length > 0 && <BreadCrumbs paths={paths} />}
+            {openMenu && (
+                <div className="py-5 px-2 bg-gray-100 w-screen">
+                    <li>A</li>
+                    <li>A</li>
+                    <li>A</li>
+                    <li>A</li>
+                    <li>A</li>
+                </div>
+            )}
+        </>
+    );
 };
 
 export default Navbar;
