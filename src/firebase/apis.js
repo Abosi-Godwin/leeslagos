@@ -12,7 +12,6 @@ import { fireStore } from "../firebase/config";
 
 const ordersCollection = collection(fireStore, "orders");
 
-
 const fetchUserOrdersApi = async userId => {
     const ordersRef = collection(fireStore, "orders");
     const q = query(ordersRef, where("userId", "==", userId));
@@ -27,8 +26,9 @@ const fetchUserOrdersApi = async userId => {
             createdAt: data.createdAt?.toDate() ?? null,
             paidAt: data.paidAt?.toDate() ?? null
         };
-    });
+    })?.sort((a, b) => b.createdAt - a.createdAt);;
 };
+
 const addOrdersApi = async docDatas => {
     const orderRef = doc(ordersCollection, docDatas.orderId);
     await setDoc(orderRef, docDatas);
@@ -37,11 +37,15 @@ const addOrdersApi = async docDatas => {
 
 const getOrdersApi = async orderId => {
     const orderRef = doc(fireStore, "orders", orderId);
-    const orderSnap = getDoc(orderRef);
+
+    const orderSnap = await getDoc(orderRef);
+
     if (!orderSnap.exists()) {
         return "Not found";
     }
     const orderData = orderSnap.data();
+
     return orderData;
 };
+
 export { fetchUserOrdersApi, addOrdersApi, getOrdersApi };

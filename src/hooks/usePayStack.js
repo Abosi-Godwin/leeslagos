@@ -7,51 +7,63 @@ import { useFireStore } from "./useFireStore";
 import { useCart } from "../contexts/cart";
 
 export function usePayStack() {
-  let orderDatas = null;
-  const navigate = useNavigate();
+    let orderDatas = null;
+    const navigate = useNavigate();
 
-  const { addOrders } = useFireStore();
-  const { dispatch } = useCart();
+    const { addOrders } = useFireStore();
+    const { dispatch } = useCart();
 
-  const onClose = () => {
-    toast.error("Payment cancelled.");
-  };
-
-  const checkoutOrderFun = (userDetails) => {
-    const onSuccess = async (transaction) => {
-      navigate("/ordered", {
-        state: {
-          reference: transaction.reference,
-          status: transaction.status,
-          message: transaction.message,
-          customerAndOrderDatas: orderDatas,
-        },
-      });
-
-      queueMicrotask(() => {
-        const docDatas = createDbDatas(userDetails, orderDatas);
-        addOrders(docDatas).then(() => dispatch({ type: "clear" }));
-      });
+    const onClose = () => {
+        toast.error("Payment cancelled.");
     };
 
-    const orderDetails = createOrderDetails({ ...userDetails, onSuccess, onClose });
+    const checkoutOrderFun = userDetails => {
+        const onSuccess = async transaction => {
+            navigate("/ordered", {
+                state: {
+                    reference: transaction.reference,
+                    status: transaction.status,
+                    message: transaction.message,
+                    customerAndOrderDatas: orderDatas
+                }
+            });
 
-    if (orderDetails.ref) {
-      const { ref, amount, email, date, firstname, lastname, phone, metadata } = orderDetails;
+            const docDatas = createDbDatas(userDetails, orderDatas);
+            addOrders(docDatas)
+            dispatch({ type: "clear" });
+        };
 
-      orderDatas = {
-        ref,
-        amount,
-        email,
-        date,
-        firstname,
-        lastname,
-        phone,
-        metadata,
-      };
-    }
-    initiateCheckout(orderDetails);
-  };
+        const orderDetails = createOrderDetails({
+            ...userDetails,
+            onSuccess,
+            onClose
+        });
 
-  return { checkoutOrderFun };
+        if (orderDetails.ref) {
+            const {
+                ref,
+                amount,
+                email,
+                date,
+                firstname,
+                lastname,
+                phone,
+                metadata
+            } = orderDetails;
+
+            orderDatas = {
+                ref,
+                amount,
+                email,
+                date,
+                firstname,
+                lastname,
+                phone,
+                metadata
+            };
+        }
+        initiateCheckout(orderDetails);
+    };
+
+    return { checkoutOrderFun };
 }

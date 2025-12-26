@@ -1,14 +1,49 @@
-import { collection, doc, setDoc } from "firebase/firestore";
-import { fireStore } from "../firebase/config";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import {
+    fetchUserOrdersApi,
+    addOrdersApi,
+    getOrdersApi
+} from "../firebase/apis";
+import { useAuth } from "../contexts/auth";
 
 export function useFireStore() {
-  const ordersCollection = collection(fireStore, "orders");
-  const getOrders = () => ordersCollection;
+    const { auth } = useAuth();
 
-  const addOrders = (docDatas) => {
-    const orderRef = doc(ordersCollection, docDatas.orderId);
-    return setDoc(orderRef, docDatas);
-  };
+    const userId = auth?.currentUser?.uid;
 
-  return { getOrders, addOrders };
+    const {
+        mutate: addOrders,
+        data: addedOrder,
+        error: orderError,
+        isPending: isAddingOrder,
+        isError: isOrderError
+    } = useMutation({
+        mutationFn: addOrdersApi
+    });
+
+    const {
+        mutate: getOrder,
+        data: trackingOrder,
+        error: getOrderError,
+        isPending: isGettingOrder,
+        isError: isGetOrderError
+    } = useMutation({
+        mutationFn: getOrdersApi
+    });
+
+    const { data: orders, isPending: ordersLoading } = useQuery({
+        queryKey: [userId],
+        queryFn: () => fetchUserOrdersApi(userId),
+        enabled: !!userId
+    });
+
+    return {
+        orders,
+        addOrders,
+        trackingOrder,
+        getOrder,
+        isAddingOrder,
+        ordersLoading
+    };
 }

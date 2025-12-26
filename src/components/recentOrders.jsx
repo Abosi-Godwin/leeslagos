@@ -1,21 +1,25 @@
 import { formatCurrency } from "../utils/currencyFormater";
 import { formatDistanceToNow } from "date-fns";
 import { useLoading } from "../contexts/loading";
+
 import CtaButton from "./ctaButton";
 import Heading from "./heading";
-//import Loader from "./loader";
+import Loader from "./loader";
+
 const handleTracking = id => {
     console.log(id);
 };
 
 const RecentOrders = ({ orders }) => {
-   const { loadingSomething } = useLoading();
-     if (loadingSomething) {
-       // return <Loader />;
+    const { loadingSomething } = useLoading();
+    if (loadingSomething) {
+        return <Loader />;
     }
     return (
-        <div>
-            <Heading text="Orders" />
+        <div className="py-8">
+            <Heading text="Recent orders" />
+            <p>Past orders you can track.</p>
+
             <div className="grid gap-5 grid-cols-1 py-5">
                 {orders.map(order => {
                     const {
@@ -27,9 +31,13 @@ const RecentOrders = ({ orders }) => {
                         date
                     } = order || {};
 
-                    const createdDate = createdAt.toLocaleDateString();
+                    const createdDate = formatDistanceToNow(
+                        createdAt.toLocaleDateString(),
+                        {addSuffix: true}
+                    );
 
                     const totalItems = orderedItems?.length;
+
                     return (
                         <div
                             key={orderId}
@@ -41,17 +49,14 @@ const RecentOrders = ({ orders }) => {
                                     <h1 className="uppercase font-semibold">
                                         {orderId}
                                     </h1>
-                                    <h1>
-                                        {formatDistanceToNow(date, {
-                                            addSuffix: true
-                                        })}
-                                    </h1>
+                                    <h1>{createdDate}</h1>
                                 </div>
                                 <h1 className="capitalize">{deliveryStatus}</h1>
                             </div>
                             <div className="py-5 flex">
                                 {orderedItems.slice(0, 3).map(order => (
                                     <div
+                                        key={order.id}
                                         className="flex flex-col items-center
                                     justify-center"
                                     >
