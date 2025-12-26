@@ -5,18 +5,17 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/loader";
 
 export const ProtectedPages = ({ children }) => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const { auth, loading } = useAuth();
-  const isAuthenticated = auth?.currentUser;
+    const { user, isAuthenticated, loading } = useAuth();
 
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      navigate("/login", {
-        replace: true,
-      });
-    }
-  }, [isAuthenticated, loading]);
+    useEffect(() => {
+        if (!loading && !isAuthenticated) {
+            navigate("/login", {
+                replace: true
+            });
+        }
+    }, [isAuthenticated, loading]);
 
-  return isAuthenticated && children;
+    return isAuthenticated && children;
 };

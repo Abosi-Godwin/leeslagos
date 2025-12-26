@@ -4,18 +4,17 @@ import { useAuth } from "../contexts/auth";
 import { useNavigate } from "react-router-dom";
 
 export const AuthRedirect = ({ children }) => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const { auth, loading } = useAuth();
-  const isAuthenticated = auth?.currentUser;
+    const { user, isAuthenticated, loading } = useAuth();
 
-  useEffect(() => {
-    if (!loading && isAuthenticated) {
-      navigate("/", {
-        replace: true,
-      });
-    }
-  }, [isAuthenticated, loading, navigate]);
+    useEffect(() => {
+        if (!loading && isAuthenticated) {
+            navigate("/", {
+                replace: true
+            });
+        }
+    }, [isAuthenticated, loading, navigate]);
 
-  return !isAuthenticated && children;
+    return !isAuthenticated && children;
 };

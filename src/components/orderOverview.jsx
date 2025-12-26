@@ -20,9 +20,7 @@ const OrderOverview = ({ orderDatas }) => {
         paidAt,
         createdAt
     } = orderDatas || {};
-    console.log(createdAt);
-   // const createdDate = createdAt.toLocaleDateString();
-
+    
     const overview = [
         { label: "Order ID", value: orderId },
         { label: "Ordered date", value: orderId },
