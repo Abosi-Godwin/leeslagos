@@ -7,12 +7,25 @@ import {
     FaInstagram,
     FaTiktok
 } from "react-icons/fa6";
+
+import { NavLink } from "react-router-dom";
+
 import { Toaster } from "react-hot-toast";
 import Logo from "../components/logo";
 import ScrollToTop from "../components/scrollToTop";
 
+// 1. Define your links here so you can map over them
+
+const navLinks = [
+    { name: "About Us", path: "/about" },
+    { name: "Terms and conditions", path: "/terms" },
+    { name: "Contact us", path: "/contact" },
+    { name: "Delivery information", path: "/delivery" },
+    { name: "Privacy policy", path: "/privacy" },
+    { name: "Site map", path: "/trackOrder" }
+];
+
 const Footer = () => {
-     
     return (
         <footer
             className="py-12 md:px-6 bg-gray-100 flex flex-col items-center
@@ -54,12 +67,24 @@ const Footer = () => {
                     <div className="pt-6 md:pt-0">
                         <h1 className="text-xl font-semibold">Information </h1>
                         <ul className="grid grid-cols-2 gap-4 py-4">
-                            <li>About Us</li>
-                            <li>Terms and conditions</li>
-                            <li>Contact us</li>
-                            <li>Delivery information</li>
-                            <li>Privacy policy</li>
-                            <li>Site map</li>
+                            {navLinks.map(link => (
+                                <li
+                                    key={link.name}
+                                    className="border-b border-gray-100 pb-2"
+                                >
+                                    <NavLink
+                                        to={link.path}
+                                        onClick={() => setOpenMenu(false)} // Close menu on click
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "text-neutral-900 font-bold block"
+                                                : "text-neutral-600 block"
+                                        }
+                                    >
+                                        {link.name}
+                                    </NavLink>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div>
@@ -107,8 +132,8 @@ const Footer = () => {
                 </div>
             </div>
             <p className="pt-4 text-sm text-center">
-                &copy; {new Date().getFullYear()} Leeslagos Made with ❤️
-                by Godwin
+                &copy; {new Date().getFullYear()} Leeslagos Made with ❤️ by
+                Godwin
             </p>
             <ScrollToTop />
             <Toaster position="bottom-right" />
