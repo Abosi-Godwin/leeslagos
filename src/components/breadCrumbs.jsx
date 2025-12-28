@@ -4,7 +4,7 @@ const BreadCrumbs = ({ paths }) => {
   let breadPath = "";
  
   return (
-    <ul className="p-2 bg-gray-100 text-neutral-900 pt-16">
+    <ul className="p-2 bg-gray-100 text-neutral-900">
       <Link to="/">Home</Link>
       {paths.map((item, index) => {
         breadPath += `/${item}`;

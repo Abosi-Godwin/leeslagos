@@ -1,11 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClientProvider,QueryClient } from "@tanstack/react-query";
-//import {  } from "@tanstack/react-query";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 import Home from "./pages/homepage";
 import ProductsPage from "./pages/productsPage";
 import ProductPage from "./pages/productPage";
 import Wishlist from "./pages/wishlist";
 import Cart from "./pages/cart";
+import About from "./pages/about";
+import Contact from "./pages/contact";
 import Checkout from "./pages/checkout";
 import TrackOrder from "./pages/trackOrder";
 import OrderSummary from "./pages/orderSummary";
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
     {
         path: "/cart",
         element: <Cart />
+    },
+    {
+        path: "/about",
+        element: <About />
+    },
+    {
+        path: "/contact",
+        element: <Contact />
     },
     {
         path: "/checkout",
@@ -86,7 +96,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  
     const queryClient = new QueryClient();
     return (
         <QueryClientProvider client={queryClient}>
