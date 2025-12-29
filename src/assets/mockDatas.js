@@ -1,13 +1,7 @@
-import {
-    FaLock,
-    FaHeadset,
-    
-    
-  
-    FaCertificate,
-    
-} from "react-icons/fa6";
+import { FaLock, FaHeadset, FaCertificate } from "react-icons/fa6";
+
 import { FaShippingFast, FaUndo } from "react-icons/fa";
+
 export const heroSlides = [
     {
         id: 1,
@@ -15,6 +9,7 @@ export const heroSlides = [
         subtitle:
             "Discover everyday essentials with a timeless edge — crafted for modern living.",
         cta: "Shop New Arrivals",
+        link: "/products",
         image: "/images/new_arrival.jpeg"
     },
     {
@@ -23,6 +18,7 @@ export const heroSlides = [
         subtitle:
             "From statement bags to subtle accents, complete every look with our signature pieces.",
         cta: "Explore Accessories",
+        link: "/products",
         image: "/images/accessories.jpeg"
     },
     {
@@ -31,6 +27,7 @@ export const heroSlides = [
         subtitle:
             "Style meets warmth. Elevate your wardrobe with our seasonal collection.",
         cta: "Shop the Collection",
+        link: "/products",
         image: "/images/outdoor_clothes.jpeg"
     },
     {
@@ -39,6 +36,7 @@ export const heroSlides = [
         subtitle:
             "Inspired by the energy of Lagos, designed for the world — fashion that moves with you.",
         cta: "Discover the Story",
+        link: "/about",
         image: "/images/brand_story.jpeg"
     }
 ];

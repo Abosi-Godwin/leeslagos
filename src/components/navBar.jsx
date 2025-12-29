@@ -1,22 +1,28 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link, NavLink } from "react-router-dom";
-
 import { FaBars, FaX, FaCartArrowDown, FaHeart } from "react-icons/fa6";
 
 import Logo from "./logo";
 import BreadCrumbs from "./breadCrumbs";
+
+import { logOutApi } from "../auth/logOut";
+
 import { useWishlist } from "../contexts/wishlist";
 import { useCart } from "../contexts/cart";
+import { useAuth } from "../contexts/auth";
+
 const Navbar = () => {
+    const [scrolledDown, setScrolledDown] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
 
     const url = useLocation();
     const paths = url.pathname.split("/").filter(item => item);
     const { wishlist } = useWishlist();
     const { cart } = useCart();
+    const { isAuthenticated } = useAuth();
+
     const totalWishes = wishlist.length;
     const totalCart = cart.length;
-    const [scrolledDown, setScrolledDown] = useState(false);
 
     useEffect(() => {
         const getScrolled = () => {
@@ -39,9 +45,22 @@ const Navbar = () => {
         { name: "Products", path: "/products" },
         { name: "About", path: "/about" },
         { name: "Contact", path: "/contact" },
-        { name: "Track order", path: "/trackOrder" }
+        { name: "Track order", path: "/trackOrder" },
+        { name: "Help", path: "/help" }
     ];
 
+    // 2. Define your links here so you can map over them
+    const userNavLinks = [
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+        { name: "Account", path: "/contact" },
+        { name: "Track order", path: "/trackOrder" },
+        { name: "Help", path: "/help" }
+    ];
+    const handleLogOut = () => {
+        logOutApi();
+        setOpenMenu(false);
+    };
     return (
         <>
             <nav
@@ -70,6 +89,13 @@ const Navbar = () => {
                             </NavLink>
                         </li>
                     ))}
+
+                    <button
+                        className="p-3 bg-primary-light
+                    text-primary-dark font-bold rounded-md"
+                    >
+                        Log out
+                    </button>
                 </ul>
 
                 {/* --- Right: Icons & Mobile Toggle --- */}
@@ -120,25 +146,62 @@ const Navbar = () => {
                        : "scale-y-0 opacity-0 h-0"
                } `}
             >
+                {/*Mobile menu list*/}
                 <ul className="flex flex-col py-4 px-6 gap-4">
-                    {navLinks.map(link => (
-                        <li
-                            key={link.name}
-                            className="border-b border-gray-100 pb-2"
+                    {isAuthenticated
+                        ? userNavLinks.map(link => (
+                              <li
+                                  key={link.name}
+                                  className="border-b border-gray-100 pb-2"
+                              >
+                                  <NavLink
+                                      to={link.path}
+                                      onClick={() => setOpenMenu(false)}
+                                      className={({ isActive }) =>
+                                          isActive
+                                              ? "text-neutral-900 font-bold block"
+                                              : "text-neutral-600 block"
+                                      }
+                                  >
+                                      {link.name}
+                                  </NavLink>
+                              </li>
+                          ))
+                        : navLinks.map(link => (
+                              <li
+                                  key={link.name}
+                                  className="border-b border-gray-100 pb-2"
+                              >
+                                  <NavLink
+                                      to={link.path}
+                                      onClick={() => setOpenMenu(false)}
+                                      className={({ isActive }) =>
+                                          isActive
+                                              ? "text-neutral-900 font-bold block"
+                                              : "text-neutral-600 block"
+                                      }
+                                  >
+                                      {link.name}
+                                  </NavLink>
+                              </li>
+                          ))}
+                    {isAuthenticated ? (
+                        <button
+                            className="py-0.5 px-3 bg-gray-200
+                     font-bold rounded-md w-fit"
+                            onClick={handleLogOut}
                         >
-                            <NavLink
-                                to={link.path}
-                                onClick={() => setOpenMenu(false)} // Close menu on click
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? "text-neutral-900 font-bold block"
-                                        : "text-neutral-600 block"
-                                }
-                            >
-                                {link.name}
-                            </NavLink>
-                        </li>
-                    ))}
+                            Log out
+                        </button>
+                    ) : (
+                        <Link
+                            to="/login"
+                            className="py-1 px-5 bg-primary-dark
+                    text-white font-bold rounded-md w-fit"
+                        >
+                            Login
+                        </Link>
+                    )}
                 </ul>
             </div>
 

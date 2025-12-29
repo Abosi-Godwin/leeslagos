@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
-import CtaButton from "../components/ctaButton";
+
+import { Link } from "react-router-dom";
+ 
 const HeroImage = ({ data, index }) => {
     return (
         <div
@@ -50,11 +52,16 @@ const HeroImage = ({ data, index }) => {
                         </h2>
                         <p>{data.subtitle}</p>
                     </div>
-                    <CtaButton text={data.cta} type="cta" />
+                    <Link
+                        to={data.link}
+                        className="py-2 px-4 rounded-md w-full font-bold outline-none
+            border-0 bg-primary-normal text-white"
+                    >
+                        {data.cta}
+                    </Link>
                 </motion.div>
             </AnimatePresence>
         </div>
     );
 };
 export default HeroImage;
- 
