@@ -105,7 +105,11 @@ const Navbar = () => {
                         className="hover:scale-110 transition-transform"
                     >
                         <p className="relative">
-                            <span className="text-xs flex items-center justify-center font-bold bg-neutral-900 w-5 h-5 rounded-full text-white absolute -top-2 -right-2">
+                            <span
+                                className="text-xs flex items-center
+                            justify-center font-bold bg-neutral-900 w-5 h-5
+                            rounded-full text-white absolute -top-4 right-0"
+                            >
                                 {totalWishes}
                             </span>
                             <FaHeart />
@@ -117,7 +121,11 @@ const Navbar = () => {
                         className="hover:scale-110 transition-transform"
                     >
                         <p className="relative">
-                            <span className="text-xs flex items-center justify-center font-bold bg-neutral-900 w-5 h-5 rounded-full text-white absolute -top-2 -right-2">
+                            <span
+                                className="text-xs flex items-center
+                            justify-center font-bold bg-neutral-900 w-5 h-5
+                            rounded-full text-white absolute -top-4 right-0"
+                            >
                                 {totalCart}
                             </span>
                             <FaCartArrowDown />
