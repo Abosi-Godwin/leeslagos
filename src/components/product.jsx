@@ -10,6 +10,7 @@ import { useWishlist } from "../contexts/wishlist";
 
 const Product = ({ data }) => {
     const [inWishList, setInWishlist] = useState(false);
+    
     const { dispatch, wishlist } = useWishlist();
 
     const handleSetFavorite = () => {

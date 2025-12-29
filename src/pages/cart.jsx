@@ -81,6 +81,7 @@ const Cart = () => {
                         </p>
 
                         <CtaButton
+                        disable={emptyCart}
                             handler={handleCheckOutBtn}
                             type="cta"
                             text="Secure checkout"
