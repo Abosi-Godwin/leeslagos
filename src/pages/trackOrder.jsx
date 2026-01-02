@@ -34,6 +34,7 @@ const TrackOrder = () => {
         trackingOrder,
         getOrder,
         isAddingOrder,
+        isGettingOrder,
         ordersLoading
     } = useFireStore();
 
@@ -44,9 +45,12 @@ const TrackOrder = () => {
         getOrder(orderId);
         reset();
     };
+    //console.log(trackingOrder);
 
     const totalOrders = orders?.length;
-
+    const notSearchedYet = trackingOrder === undefined && !isGettingOrder;
+    const orderNotFound = trackingOrder === "Not found";
+    const searchedOrder = trackingOrder?.orderId;
     return (
         <>
             <NavBar />
@@ -84,7 +88,10 @@ const TrackOrder = () => {
                     </form>
                 </div>
 
-                {trackingOrder ? (
+                {isGettingOrder && <h1>Loading orders </h1>}
+                {orderNotFound && <h1>Hello happy new year</h1>}
+
+                {searchedOrder && (
                     <div>
                         <VerticalOrderStepper currentStatus={deliveryStatus} />
 
@@ -92,9 +99,9 @@ const TrackOrder = () => {
 
                         <TrackOrderStatus items={orderedItems} />
                     </div>
-                ) : (
-                    <NotTrackingYet noOders={totalOrders < 1} />
                 )}
+
+                {notSearchedYet && <NotTrackingYet noOders={totalOrders < 1} />}
 
                 {totalOrders >= 1 && <RecentOrders orders={orders} />}
 

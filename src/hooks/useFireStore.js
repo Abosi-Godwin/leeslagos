@@ -42,7 +42,7 @@ export function useFireStore() {
         orders,
         addOrders,
         trackingOrder,
-        getOrder,
+        getOrder,isGettingOrder,
         isAddingOrder,
         ordersLoading
     };

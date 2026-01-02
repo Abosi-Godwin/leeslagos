@@ -19,8 +19,7 @@ const Navbar = () => {
     const paths = url.pathname.split("/").filter(item => item);
     const { wishlist } = useWishlist();
     const { cart } = useCart();
-    const { isAuthenticated } = useAuth();
-
+    const { isAuthenticated, user } = useAuth();
     const totalWishes = wishlist.length;
     const totalCart = cart.length;
 
@@ -53,8 +52,9 @@ const Navbar = () => {
     const userNavLinks = [
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
-        { name: "Account", path: "/contact" },
-        { name: "Track order", path: "/trackOrder" },
+        { name: "My Orders", path: "/contact" },
+        { name: "My Account", path: "/contact" },
+        { name: "Track Order", path: "/trackOrder" },
         { name: "Help", path: "/help" }
     ];
     const handleLogOut = () => {

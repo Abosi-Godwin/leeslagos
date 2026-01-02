@@ -1,17 +1,15 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-
 import { authData } from "../firebase/config";
 
-export function logInApi(email, password) {
-    const loginInfos = signInWithEmailAndPassword(authData, email, password)
-        .then(userCredential => {
-            
-            const user = userCredential.user;
-            return user;
-        })
-        .catch(error => {
-            throw new Error(error.message);
-        });
-
-    return loginInfos;
+export async function logInApi(email, password) {
+    try {
+        const userCredential = await signInWithEmailAndPassword(
+            authData,
+            email,
+            password
+        );
+        return { user: userCredential.user, error: null };
+    } catch (error) {
+        return { user: null, error: error.code };
+    }
 }
