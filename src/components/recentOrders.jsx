@@ -1,24 +1,20 @@
 import { formatCurrency } from "../utils/currencyFormater";
 import { formatDistanceToNow } from "date-fns";
-import { useLoading } from "../contexts/loading";
+//import { useLoading } from "../contexts/loading";
 
 import CtaButton from "./ctaButton";
 import Heading from "./heading";
-import Loader from "./loader";
+//import Loader from "./loader";
 
 const handleTracking = id => {
     console.log(id);
 };
 
 const RecentOrders = ({ orders }) => {
-    const { loadingSomething } = useLoading();
-    if (loadingSomething) {
-        return <Loader />;
-    }
     return (
         <div className="py-8">
-            <Heading text="Recent orders" />
-            <p>Past orders you can track.</p>
+            <Heading text="Most recent orders" />
+            <p>Your 5 past orders.</p>
 
             <div className="grid gap-5 grid-cols-1 py-5">
                 {orders.map(order => {
@@ -32,8 +28,8 @@ const RecentOrders = ({ orders }) => {
                     } = order || {};
 
                     const createdDate = formatDistanceToNow(
-                        createdAt.toLocaleDateString(),
-                        {addSuffix: true}
+                        createdAt.toString(),
+                        { addSuffix: true }
                     );
 
                     const totalItems = orderedItems?.length;
@@ -45,7 +41,7 @@ const RecentOrders = ({ orders }) => {
                             ring-gray-100"
                         >
                             <div className="flex justify-between">
-                                <div className="">
+                                <div>
                                     <h1 className="uppercase font-semibold">
                                         {orderId}
                                     </h1>
@@ -83,7 +79,7 @@ const RecentOrders = ({ orders }) => {
                                 <h3 className="font-bold">
                                     {formatCurrency(totalAmount)}
                                 </h3>
-                                <h3 className="">
+                                <h3>
                                     {totalItems}{" "}
                                     {totalItems <= 1
                                         ? "item ordered"

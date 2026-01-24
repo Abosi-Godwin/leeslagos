@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useLoading } from "../contexts/loading";
+import { useLoadingSomething } from "../hooks/useLoading";
 import { useFireStore } from "../hooks/useFireStore";
 
 import Input from "../components/input";
@@ -8,14 +8,16 @@ import Button from "../components/button";
 
 import VerticalOrderStepper from "../components/verticalStepper";
 import OrderOverview from "../components/orderOverview";
+import OrderNotFound from "../components/orderNotFound";
 
 import TrackOrderStatus from "../components/trackOrderStatus";
 
 import OrderSupport from "../components/orderSupport";
 import RecentOrders from "../components/recentOrders";
+import MiniLoader from "../components/miniLoader";
 import NotTrackingYet from "../components/notTracking";
-
 import NavBar from "../components/navBar";
+
 import Footer from "../sections/footer";
 
 const TrackOrder = () => {
@@ -26,7 +28,7 @@ const TrackOrder = () => {
         formState: { errors }
     } = useForm();
 
-    const { loadingSomething } = useLoading();
+    const { loadingSomething } = useLoadingSomething();
 
     const {
         orders,
@@ -42,15 +44,18 @@ const TrackOrder = () => {
 
     const submitForm = trackingDetails => {
         const { orderId } = trackingDetails;
+
+        if (orderId === undefined || orderId.length <= 0) return;
+
         getOrder(orderId);
         reset();
     };
-    //console.log(trackingOrder);
 
     const totalOrders = orders?.length;
     const notSearchedYet = trackingOrder === undefined && !isGettingOrder;
     const orderNotFound = trackingOrder === "Not found";
     const searchedOrder = trackingOrder?.orderId;
+
     return (
         <>
             <NavBar />
@@ -88,8 +93,9 @@ const TrackOrder = () => {
                     </form>
                 </div>
 
-                {isGettingOrder && <h1>Loading orders </h1>}
-                {orderNotFound && <h1>Hello happy new year</h1>}
+                {loadingSomething ? <MiniLoader /> : ""}
+
+                {orderNotFound && <OrderNotFound />}
 
                 {searchedOrder && (
                     <div>
@@ -103,7 +109,7 @@ const TrackOrder = () => {
 
                 {notSearchedYet && <NotTrackingYet noOders={totalOrders < 1} />}
 
-                {totalOrders >= 1 && <RecentOrders orders={orders} />}
+                {totalOrders >= 1 && <RecentOrders orders={orders.slice(0, 5)} />}
 
                 <OrderSupport />
             </div>

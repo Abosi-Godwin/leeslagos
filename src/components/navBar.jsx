@@ -52,7 +52,7 @@ const Navbar = () => {
     const userNavLinks = [
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
-        { name: "My Orders", path: "/contact" },
+        { name: "My Orders", path: "/orders" },
         { name: "My Account", path: "/contact" },
         { name: "Track Order", path: "/trackOrder" },
         { name: "Help", path: "/help" }

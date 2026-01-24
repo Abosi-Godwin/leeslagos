@@ -11,6 +11,7 @@ import Contact from "./pages/contact";
 import Checkout from "./pages/checkout";
 import TrackOrder from "./pages/trackOrder";
 import OrderSummary from "./pages/orderSummary";
+import Orders from "./pages/orders";
 import Signup from "./pages/signup";
 import Login from "./pages/login";
 
@@ -57,10 +58,18 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/ordered",
+        path: "/orderSummary",
         element: (
             <ProtectedPages>
                 <OrderSummary />,
+            </ProtectedPages>
+        )
+    },
+    {
+        path: "/orders",
+        element: (
+            <ProtectedPages>
+                <Orders />,
             </ProtectedPages>
         )
     },

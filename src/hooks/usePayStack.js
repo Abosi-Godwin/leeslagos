@@ -19,7 +19,7 @@ export function usePayStack() {
 
     const checkoutOrderFun = userDetails => {
         const onSuccess = async transaction => {
-            navigate("/ordered", {
+            navigate("/orderSummary", {
                 state: {
                     reference: transaction.reference,
                     status: transaction.status,

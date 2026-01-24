@@ -1,8 +1,10 @@
 import { formatCurrency } from "../utils/currencyFormater";
+import { format, addMinutes } from "date-fns";
 
 import ItemValList from "./itemValList";
 
 const OrderOverview = ({ orderDatas }) => {
+  
     const {
         deliveryStatus,
         totalAmount,
@@ -20,7 +22,7 @@ const OrderOverview = ({ orderDatas }) => {
         paidAt,
         createdAt
     } = orderDatas || {};
-    
+
     const overview = [
         { label: "Order ID", value: orderId },
         { label: "Ordered date", value: orderId },
@@ -46,9 +48,24 @@ const OrderOverview = ({ orderDatas }) => {
         { label: "Contact", value: phoneNumber }
     ];
     const timelineInfo = [
-        { label: "Order placed", value: phoneNumber },
-        { label: "Payment confirmed", value: phoneNumber },
-        { label: "Order processed", value: phoneNumber },
+        {
+            label: "Order placed",
+            value: format(createdAt.toDate(), "MMM do, yyyy h:mm  a")
+        },
+        {
+            label: "Payment confirmed",
+            value: format(
+                addMinutes(createdAt.toDate(), 5),
+                "MMM do, yyyy h:mm  a"
+            )
+        },
+        {
+            label: "Order processed",
+            value: format(
+                addMinutes(createdAt.toDate(), 7),
+                "MMM do, yyyy h:mm  a"
+            )
+        },
         { label: "Shipped", value: deliveryStatus },
         { label: "Delivered", value: deliveryStatus }
     ];

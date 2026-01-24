@@ -38,12 +38,25 @@ export function useFireStore() {
         enabled: !!userId
     });
 
+    const {
+        mutate: fetchOrders,
+        data: fetchedOrders,
+        isPending: ordersFetching
+    } = useMutation({
+    
+        mutationFn: () => fetchUserOrdersApi(userId),
+    
+    });
+
     return {
         orders,
         addOrders,
         trackingOrder,
-        getOrder,isGettingOrder,
+        getOrder,
+        isGettingOrder,
         isAddingOrder,
-        ordersLoading
+        ordersLoading,
+        fetchedOrders,
+        fetchOrders
     };
 }

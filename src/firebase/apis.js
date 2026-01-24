@@ -13,20 +13,23 @@ import { fireStore } from "../firebase/config";
 const ordersCollection = collection(fireStore, "orders");
 
 const fetchUserOrdersApi = async userId => {
-    const ordersRef = collection(fireStore, "orders");
-    const q = query(ordersRef, where("userId", "==", userId));
+    
+    const q = query(ordersCollection, where("userId", "==", userId));
+
     const snapshot = await getDocs(q);
 
-    return snapshot.docs.map(doc => {
-        const data = doc.data();
+    return snapshot.docs
+        .map(doc => {
+            const data = doc.data();
 
-        return {
-            ...data,
-            id: doc.id,
-            createdAt: data.createdAt?.toDate() ?? null,
-            paidAt: data.paidAt?.toDate() ?? null
-        };
-    })?.sort((a, b) => b.createdAt - a.createdAt);;
+            return {
+                ...data,
+                id: doc.id,
+                createdAt: data?.createdAt.toDate() ?? null,
+                paidAt: data?.paidAt.toDate() ?? null
+            };
+        })
+        ?.sort((a, b) => b.createdAt - a.createdAt);
 };
 
 const addOrdersApi = async docDatas => {

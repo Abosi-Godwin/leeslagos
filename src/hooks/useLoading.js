@@ -1,4 +1,4 @@
-/*import { useFireStore } from "./useFireStore";
+import { useFireStore } from "./useFireStore";
 import { useAuth } from "../contexts/auth";
 
 export const useLoadingSomething = () => {
@@ -11,4 +11,3 @@ export const useLoadingSomething = () => {
 
     return { loadingSomething };
 };
-*/
