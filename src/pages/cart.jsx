@@ -9,6 +9,7 @@ import {
     FaCcAmazonPay,
     FaCcMastercard
 } from "react-icons/fa6";
+
 import { FaShoppingBag } from "react-icons/fa";
 
 import toast from "react-hot-toast";

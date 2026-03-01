@@ -1,16 +1,11 @@
 import { formatCurrency } from "../utils/currencyFormater";
 import { formatDistanceToNow } from "date-fns";
-//import { useLoading } from "../contexts/loading";
+ 
 
 import CtaButton from "./ctaButton";
 import Heading from "./heading";
-//import Loader from "./loader";
-
-const handleTracking = id => {
-    console.log(id);
-};
-
-const RecentOrders = ({ orders }) => {
+ 
+const RecentOrders = ({ orders, track }) => {
     return (
         <div className="py-8">
             <Heading text="Most recent orders" />
@@ -88,7 +83,7 @@ const RecentOrders = ({ orders }) => {
                                 <CtaButton
                                     type="primary"
                                     data={orderId}
-                                    handler={handleTracking}
+                                    handler={track}
                                     text="Track Order"
                                 />
                             </div>

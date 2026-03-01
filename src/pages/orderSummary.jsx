@@ -1,9 +1,10 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
 
 import { formatCurrency } from "../utils/currencyFormater";
 
 import NavBar from "../components/navBar";
+import LinkTo from "../components/link";
 import Footer from "../sections/footer";
 import Button from "../components/button";
 import OrderedItems from "../components/orderedItems";
@@ -13,16 +14,15 @@ function OrderSummary() {
 
     const { reference, status, message, customerAndOrderDatas } =
         location?.state || {};
-        
+
     const { ref, amount, date, email, firstname, lastname, phone, metadata } =
         customerAndOrderDatas || {};
-        
+
     const { orderId, customerId, cartItems, shippingAddress, extraNotes } =
         metadata || {};
-        
+
     const totalCart = cartItems?.length || [];
-    
-    
+
     return (
         <>
             <NavBar />
@@ -80,8 +80,6 @@ function OrderSummary() {
                         Ordered {totalCart >= 2 ? "items" : "item"} ({totalCart}
                         )
                     </h1>
-
-                    <OrderedItems items={cartItems} />
 
                     <div className="py-5">
                         <h1 className="font-bold">
@@ -149,18 +147,16 @@ function OrderSummary() {
                     </div>
                 </div>
                 <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
-                    <Link to="/trackOrder">
-                        <Button type="btn" text="Track Order" loading={false} />
-                    </Link>
-
-                    <Link to="/products">
-                        <Button
-                            type="btn"
-                            btn="secondary"
-                            text="Continue Shopping"
-                            loading={false}
-                        />
-                    </Link>
+                    <LinkTo
+                        to={`/trackOrder?orderId=${orderId}`}
+                        text="Track Order"
+                        type="primary"
+                    />
+                    <LinkTo
+                        to="/products"
+                        text="Continue shopping"
+                        type="secondary"
+                    />
                 </div>
             </div>
             <Footer />

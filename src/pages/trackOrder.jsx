@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+
+import { useSearchParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoadingSomething } from "../hooks/useLoading";
 import { useFireStore } from "../hooks/useFireStore";
+
+import toast from "react-hot-toast";
 
 import Input from "../components/input";
 import Button from "../components/button";
@@ -28,33 +32,46 @@ const TrackOrder = () => {
         formState: { errors }
     } = useForm();
 
+    const { orders, trackingOrder, getOrder } = useFireStore();
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const { loadingSomething } = useLoadingSomething();
 
-    const {
-        orders,
-        addOrders,
-        trackingOrder,
-        getOrder,
-        isAddingOrder,
-        isGettingOrder,
-        ordersLoading
-    } = useFireStore();
+    const orderId = searchParams.get("orderId");
 
     const { deliveryStatus, orderedItems } = trackingOrder || {};
 
     const submitForm = trackingDetails => {
         const { orderId } = trackingDetails;
 
-        if (orderId === undefined || orderId.length <= 0) return;
-
-        getOrder(orderId);
+        if (!orderId || orderId === undefined || orderId.length <= 13) {
+            toast.error("Check your order ID.");
+            return;
+        }
+        setSearchParams({ orderId: orderId });
         reset();
     };
 
     const totalOrders = orders?.length;
-    const notSearchedYet = trackingOrder === undefined && !isGettingOrder;
+
+    const notSearchedYet = trackingOrder === undefined && !loadingSomething;
+
     const orderNotFound = trackingOrder === "Not found";
+
     const searchedOrder = trackingOrder?.orderId;
+
+    const startTracking = id => {
+        setSearchParams({ orderId: id });
+    };
+
+    useEffect(() => {
+        if (!orderId || orderId.length <= 13) {
+            toast.error("Check your order ID.");
+            return;
+        }
+        getOrder(orderId);
+    }, [orderId]);
 
     return (
         <>
@@ -84,7 +101,7 @@ const TrackOrder = () => {
                         <Button
                             text="start tracking"
                             type="submit"
-                            disabled={false}
+                            disabled={loadingSomething}
                             loader={false}
                         />
                         <p className="text-sm tracking-tight">
@@ -109,7 +126,12 @@ const TrackOrder = () => {
 
                 {notSearchedYet && <NotTrackingYet noOders={totalOrders < 1} />}
 
-                {totalOrders >= 1 && <RecentOrders orders={orders.slice(0, 5)} />}
+                {totalOrders >= 1 && (
+                    <RecentOrders
+                        orders={orders.slice(0, 5)}
+                        track={startTracking}
+                    />
+                )}
 
                 <OrderSupport />
             </div>

@@ -75,11 +75,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/trackOrder",
-        element: (
+        element:(
             <ProtectedPages>
-                <TrackOrder />,
+          <TrackOrder />,
             </ProtectedPages>
-        )
+          ) 
     },
     {
         path: "/signup",

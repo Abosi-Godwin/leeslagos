@@ -44,7 +44,6 @@ const WishListProvider = ({ children }) => {
         setItem("wishlist", wishlist);
     }, [wishlist]);
 
-  
     return (
         <WishlistContext.Provider value={{ wishlist, dispatch }}>
             {children}
