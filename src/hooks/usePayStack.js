@@ -1,3 +1,4 @@
+ import { useCallback } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { createOrderDetails } from "../utils/createOrderDetails";
@@ -7,63 +8,67 @@ import { useFireStore } from "./useFireStore";
 import { useCart } from "../contexts/cart";
 
 export function usePayStack() {
-    let orderDatas = null;
     const navigate = useNavigate();
-
     const { addOrders } = useFireStore();
     const { dispatch } = useCart();
 
-    const onClose = () => {
-        toast.error("Payment cancelled.");
-    };
+    const checkoutOrderFun = useCallback(async (userDetails) => {
+        // 1. Generate local order details
+        const orderDetails = createOrderDetails({ ...userDetails });
+        const { amount, ref } = orderDetails;
 
-    const checkoutOrderFun = userDetails => {
-        const onSuccess = async transaction => {
-            navigate("/orderSummary", {
-                state: {
-                    reference: transaction.reference,
-                    status: transaction.status,
-                    message: transaction.message,
-                    customerAndOrderDatas: orderDatas
-                }
-            });
-
-            const docDatas = createDbDatas(userDetails, orderDatas);
-            addOrders(docDatas)
-            dispatch({ type: "clear" });
+        const onClose = () => {
+            toast.error("Payment cancelled.");
         };
 
-        const orderDetails = createOrderDetails({
-            ...userDetails,
+        const onSuccess = async (transaction) => {
+            const loadingToast = toast.loading("Verifying transaction...");
+
+            try {
+                // 2. Verify with Vercel Serverless Function
+                const verifyRes = await fetch("/api/verify", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        reference: transaction.reference,
+                        expectedAmount: amount, // Safety check
+                    }),
+                });
+
+                const verification = await verifyRes.json();
+
+                if (verification.verified) {
+                    // 3. Save to Firestore (Server verification passed)
+                    const docDatas = createDbDatas(userDetails, orderDetails);
+                    await addOrders(docDatas);
+                    
+                    // 4. Update UI state
+                    dispatch({ type: "clear" });
+                    toast.success("Order placed successfully!", { id: loadingToast });
+
+                    navigate("/orderSummary", {
+                        state: {
+                            reference: transaction.reference,
+                            status: "success",
+                            customerAndOrderDatas: orderDetails
+                        }
+                    });
+                } else {
+                    throw new Error(verification.message || "Verification failed");
+                }
+            } catch (error) {
+                console.error("Payment Error:", error);
+                toast.error(error.message || "Could not verify payment.", { id: loadingToast });
+            }
+        };
+
+        // 5. Trigger Paystack Modal
+        initiateCheckout({
+            ...orderDetails,
             onSuccess,
             onClose
         });
-
-        if (orderDetails.ref) {
-            const {
-                ref,
-                amount,
-                email,
-                date,
-                firstname,
-                lastname,
-                phone,
-                metadata
-            } = orderDetails;
-
-            orderDatas = {
-                ref,
-                amount,
-                email,
-                date,
-                firstname,
-                lastname,
-                phone,
-                metadata
-            };
-        }
-        initiateCheckout(orderDetails);
-    };
+    }, [navigate, addOrders, dispatch]);
 
     return { checkoutOrderFun };
 }
