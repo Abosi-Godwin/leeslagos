@@ -1,4 +1,4 @@
- import { useCallback } from "react";
+import { useCallback } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { createOrderDetails } from "../utils/createOrderDetails";
@@ -12,63 +12,78 @@ export function usePayStack() {
     const { addOrders } = useFireStore();
     const { dispatch } = useCart();
 
-    const checkoutOrderFun = useCallback(async (userDetails) => {
-        // 1. Generate local order details
-        const orderDetails = createOrderDetails({ ...userDetails });
-        const { amount, ref } = orderDetails;
+    const checkoutOrderFun = useCallback(
+        async userDetails => {
+            // 1. Generate local order details
+            const orderDetails = createOrderDetails({ ...userDetails });
+            const { amount, ref } = orderDetails;
 
-        const onClose = () => {
-            toast.error("Payment cancelled.");
-        };
+            const onClose = () => {
+                toast.error("Payment cancelled.");
+            };
 
-        const onSuccess = async (transaction) => {
-            const loadingToast = toast.loading("Verifying transaction...");
+            const onSuccess = async transaction => {
+                const loadingToast = toast.loading("Verifying transaction...");
 
-            try {
-                // 2. Verify with Vercel Serverless Function
-                const verifyRes = await fetch("/api/verify", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        reference: transaction.reference,
-                        expectedAmount: amount, // Safety check
-                    }),
-                });
-
-                const verification = await verifyRes.json();
-
-                if (verification.verified) {
-                    // 3. Save to Firestore (Server verification passed)
-                    const docDatas = createDbDatas(userDetails, orderDetails);
-                    await addOrders(docDatas);
-                    
-                    // 4. Update UI state
-                    dispatch({ type: "clear" });
-                    toast.success("Order placed successfully!", { id: loadingToast });
-
-                    navigate("/orderSummary", {
-                        state: {
+                try {
+                    // 2. Verify with Vercel Serverless Function
+                    const verifyRes = await fetch("/api/verify", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
                             reference: transaction.reference,
-                            status: "success",
-                            customerAndOrderDatas: orderDetails
-                        }
+                            expectedAmount: amount // Safety check
+                        })
                     });
-                } else {
-                    throw new Error(verification.message || "Verification failed");
-                }
-            } catch (error) {
-                console.error("Payment Error:", error);
-                toast.error(error.message || "Could not verify payment.", { id: loadingToast });
-            }
-        };
 
-        // 5. Trigger Paystack Modal
-        initiateCheckout({
-            ...orderDetails,
-            onSuccess,
-            onClose
-        });
-    }, [navigate, addOrders, dispatch]);
+                    const verification = await verifyRes.json();
+                    
+                    console.log(verification);
+                    
+                    
+                    if (verification.verified) {
+                        // 3. Save to Firestore (Server verification passed)
+                        const docDatas = createDbDatas(
+                            userDetails,
+                            orderDetails
+                        );
+                        await addOrders(docDatas);
+
+                        // 4. Update UI state
+                        dispatch({ type: "clear" });
+                        toast.success("Order placed successfully!", {
+                            id: loadingToast
+                        });
+
+                        navigate("/orderSummary", {
+                            state: {
+                                reference: transaction.reference,
+                                status: "success",
+                                customerAndOrderDatas: orderDetails
+                            }
+                        });
+                    } else {
+                        throw new Error(
+                            verification.message || "Verification failed"
+                        );
+                    }
+                } catch (error) {
+                    console.error("Payment Error:", error);
+                    toast.error(error.message || "Could not verify payment.", {
+                        id: loadingToast
+                    });
+                }
+            };
+
+            // 5. Trigger Paystack Modal
+            initiateCheckout({
+                ...orderDetails,
+                onSuccess,
+                onClose
+            });
+        },
+        [navigate, addOrders, dispatch]
+    );
 
     return { checkoutOrderFun };
 }
