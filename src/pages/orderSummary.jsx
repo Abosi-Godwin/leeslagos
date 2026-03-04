@@ -167,7 +167,7 @@ function OrderSummary() {
                             </h1>
                         </div>
                     </div>
-                    <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
+                    <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center print:hidden">
                         <LinkTo
                             to={`/trackOrder?orderId=${orderId}`}
                             text="Track Order"
@@ -180,7 +180,7 @@ function OrderSummary() {
                         />
                     </div>
 
-                    <div className="py-2 px-4 bg-blue-50 text-blue-70 rounded-md mb-5">
+                    <div className="py-2 px-4 bg-blue-50 text-blue-70 rounded-md mb-5 print:hidden">
                         <p className="p-2">
                             An invoice and tracking details have been sent to{" "}
                             <strong>{email}</strong>.

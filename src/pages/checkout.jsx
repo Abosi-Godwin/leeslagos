@@ -104,7 +104,7 @@ const Checkout = () => {
                         config={{
                             required: "Phone number is required",
                             pattern: {
-                                value: /^\+?[1-9]\d{7,14}$/,
+                                value: /^\+?\d{10,15}$/,
                                 message: "Invalid phone number"
                             }
                         }}

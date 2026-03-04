@@ -10,8 +10,9 @@ export default function Input({
     defaultVal,
     onHidePassword,
     className,
-    register,errors,
-    config // <-- Your validation rules
+    register,
+    errors,
+    config 
 }) {
     return (
         <>
@@ -29,7 +30,6 @@ export default function Input({
                 disabled={disable}
                 className={className}
                 defaultValue={defaultVal}
-                /* Pass the config object as the second argument to register! */
                 {...register(valType, config || {})}
             />
             {errors?.[valType] && (
