@@ -3,27 +3,35 @@
 @tailwind utilities;
 
 @layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+     
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }
 
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  background-color: #e65c35;
+    background-color: #e65c35;
 }
 
 body,
 html {
-  color: #6b6662;
+    color: #6b6662;
 }
 
 h1,
 h2 {
-  color: #2e2c2b;
+    color: #2e2c2b;
+}
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+    .print\:hidden {
+        display: none !important;
+    }
 }

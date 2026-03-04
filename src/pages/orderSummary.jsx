@@ -23,6 +23,10 @@ function OrderSummary() {
 
     const totalCart = cartItems?.length || [];
 
+    const handlePrint = () => {
+        window.print();
+    };
+
     // Add a check for missing state at the top
     if (!customerAndOrderDatas) {
         return (
@@ -34,7 +38,9 @@ function OrderSummary() {
     }
     return (
         <>
-            <NavBar />
+            <span className="print:hidden">
+                <NavBar />
+            </span>
             <div className="py-10 px-5">
                 <div className="rounded-md bg-gray-100 m-[0_auto] py-8 ">
                     <div
@@ -158,10 +164,15 @@ function OrderSummary() {
                     </div>
                 </div>
                 <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
+                    <Button
+                        onClick={handlePrint}
+                        text="Print Receipt"
+                        type="outline"
+                    />
                     <LinkTo
                         to={`/trackOrder?orderId=${orderId}`}
                         text="Track Order"
-                        type="primary"
+                        type="secondary"
                     />
                     <LinkTo
                         to="/products"
@@ -169,31 +180,17 @@ function OrderSummary() {
                         type="secondary"
                     />
                 </div>
-                // Inside your return:
-                <div className="py-2 px-4 bg-blue-50 text-blue-700 rounded-md mb-5">
+
+                <div className="py-2 px-4 bg-neutral-700- text-primary-light rounded-md mb-5">
                     An invoice and tracking details have been sent to{" "}
                     <strong>{email}</strong>.
                 </div>
-                ;
             </div>
-            <Footer />
+            <span className="print:hidden">
+                <Footer />
+            </span>
         </>
     );
 }
 
 export default OrderSummary;
-
-{
-    /* List the items 
-<div className="border-t border-b py-4">
-    {cartItems?.map((item, index) => (
-        <div key={index} className="flex justify-between">
-            <span>
-                {item.name} x{item.quantity}
-            </span>
-            <span>{formatCurrency(item.price)}</span>
-        </div>
-    ))}
-</div>;
-*/
-}
