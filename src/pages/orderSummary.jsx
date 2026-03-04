@@ -176,17 +176,18 @@ function OrderSummary() {
                     />
                 </div>
 
-                <div className="py-2 px-4 bg-neutral-700 text-primary-light rounded-md mb-5">
+                <div className="py-2 px-4 bg-blue-50 text-blue-70 rounded-md mb-5">
+                    <p className="p-2">
+                        An invoice and tracking details have been sent to{" "}
+                        <strong>{email}</strong>.
+                    </p>
+
                     <Button
                         action={handlePrint}
                         text="Print Receipt"
                         type="outline"
                         btn="secondary"
                     />
-                    <p>
-                        An invoice and tracking details have been sent to{" "}
-                        <strong>{email}</strong>.
-                    </p>
                 </div>
             </div>
             <span className="print:hidden">
@@ -197,12 +198,3 @@ function OrderSummary() {
 }
 
 export default OrderSummary;
-
-/*
-<LinkTo
-                        to={`/trackOrder?orderId=${orderId}`}
-                        text="Track Order"
-                        type="secondary"
-                    />
-
-*/

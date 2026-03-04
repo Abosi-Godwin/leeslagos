@@ -4,7 +4,7 @@ import InputLabel from "./inputLabel";
 
 export default function Input({
     label,
-    valType="",
+    valType = "",
     placeholder,
     inputType,
     disable,
@@ -12,7 +12,8 @@ export default function Input({
     defaultVal,
     onHidePassword,
     className,
-    register
+    register,
+    config
 }) {
     return (
         <>
@@ -30,7 +31,7 @@ export default function Input({
                 disabled={disable}
                 className={className}
                 defaultValue={defaultVal}
-                {...register(valType)}
+                {...register(valType, config)}
             />
         </>
     );
