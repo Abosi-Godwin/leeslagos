@@ -19,11 +19,9 @@ export default async function handler(req, res) {
 
         if (result.status && result.data.status === "success") {
             // Paystack amounts are in Kobo/Cents (Amount * 100)
-            const actualAmountPaid = result.data.amount / 100;
+            const actualAmountPaid = result.data.amount;
 
             if (actualAmountPaid >= expectedAmount) {
-                console.log(actualAmountPaid);
-                console.log(expectedAmount);
                 return res.status(200).json({
                     verified: true,
                     data: result.data
