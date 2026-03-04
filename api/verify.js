@@ -3,9 +3,7 @@ export default async function handler(req, res) {
     if (req.method !== "POST") return res.status(405).end();
 
     const { reference, expectedAmount } = req.body;
-
-    console.log(reference, expectedAmount);
-
+ 
     try {
         const response = await fetch(
             `https://api.paystack.co/transaction/verify/${reference}`,
@@ -18,14 +16,14 @@ export default async function handler(req, res) {
         );
 
         const result = await response.json();
-      
-        console.log(result);
 
         if (result.status && result.data.status === "success") {
             // Paystack amounts are in Kobo/Cents (Amount * 100)
             const actualAmountPaid = result.data.amount / 100;
 
             if (actualAmountPaid >= expectedAmount) {
+                console.log(actualAmountPaid);
+                console.log(expectedAmount);
                 return res.status(200).json({
                     verified: true,
                     data: result.data

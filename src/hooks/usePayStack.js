@@ -23,7 +23,7 @@ export function usePayStack() {
             console.log(orderDetails);
 
             const { amount, ref } = orderDetails;
-
+console.log(amount);
             const onClose = () => {
                 toast.error("Payment cancelled.");
             };
