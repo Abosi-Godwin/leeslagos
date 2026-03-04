@@ -1,7 +1,6 @@
 import { formatCurrency } from "../utils/currencyFormater";
 
 const OrderedItems = ({ items }) => {
-    
     return (
         <div className="overflow-scroll  no-scrollbar">
             <table
@@ -19,7 +18,7 @@ const OrderedItems = ({ items }) => {
                 </thead>
 
                 <tbody className="divide-y-2 divide-y-gray-100 py-6">
-                    {items.map(data => (
+                    {items?.map(data => (
                         <tr
                             key={data.id}
                             className="bg-white rounded-xl shadow-sm"

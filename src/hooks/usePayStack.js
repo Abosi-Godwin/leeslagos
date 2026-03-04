@@ -19,13 +19,9 @@ export function usePayStack() {
             // 1. Generate local order details
             const orderDetails = createOrderDetails({ ...userDetails });
 
-            //--------------------
-            console.log(orderDetails);
-
             const { amount, subTotal, ref } = orderDetails;
+ 
 
-            console.log(amount, subTotal);
-            
             const onClose = () => {
                 toast.error("Payment cancelled.");
             };

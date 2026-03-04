@@ -23,6 +23,15 @@ function OrderSummary() {
 
     const totalCart = cartItems?.length || [];
 
+    // Add a check for missing state at the top
+    if (!customerAndOrderDatas) {
+        return (
+            <div className="text-center py-20">
+                No order data found.{" "}
+                <LinkTo to="/products" text="Go Shopping" />
+            </div>
+        );
+    }
     return (
         <>
             <NavBar />
@@ -44,7 +53,6 @@ function OrderSummary() {
                         been received and is now being processed.
                     </p>
                 </div>
-
                 <div className="border-2 border-gray-100 rounded-md p-5 mt-5">
                     <h1 className="text-xl font-semibold">Order Summary</h1>
                     <div className="py-3">
@@ -76,12 +84,15 @@ function OrderSummary() {
                     <br></br>
                     <hr></hr>
                     <br></br>
+
                     <h1 className="text-xl font-semibold">
                         Ordered {totalCart >= 2 ? "items" : "item"} ({totalCart}
                         )
                     </h1>
 
                     <div className="py-5">
+                        <OrderedItems items={cartItems} />
+
                         <h1 className="font-bold">
                             Subtotal:{" "}
                             <span className="font-normal">
@@ -158,6 +169,12 @@ function OrderSummary() {
                         type="secondary"
                     />
                 </div>
+                // Inside your return:
+                <div className="py-2 px-4 bg-blue-50 text-blue-700 rounded-md mb-5">
+                    An invoice and tracking details have been sent to{" "}
+                    <strong>{email}</strong>.
+                </div>
+                ;
             </div>
             <Footer />
         </>
@@ -165,3 +182,18 @@ function OrderSummary() {
 }
 
 export default OrderSummary;
+
+{
+    /* List the items 
+<div className="border-t border-b py-4">
+    {cartItems?.map((item, index) => (
+        <div key={index} className="flex justify-between">
+            <span>
+                {item.name} x{item.quantity}
+            </span>
+            <span>{formatCurrency(item.price)}</span>
+        </div>
+    ))}
+</div>;
+*/
+}
