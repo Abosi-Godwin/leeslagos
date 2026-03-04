@@ -1,40 +1,45 @@
- // api/verify.js
+// api/verify.js
 export default async function handler(req, res) {
-    if (req.method !== 'POST') return res.status(405).end();
+    if (req.method !== "POST") return res.status(405).end();
 
     const { reference, expectedAmount } = req.body;
+
+    console.log(reference, expectedAmount);
 
     try {
         const response = await fetch(
             `https://api.paystack.co/transaction/verify/${reference}`,
             {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
-                },
+                    Authorization: `Bearer ${process.env.VITE_PAYSTACK_KEY}`
+                }
             }
         );
 
         const result = await response.json();
+        console.log(result);
 
-        if (result.status && result.data.status === 'success') {
+        if (result.status && result.data.status === "success") {
             // Paystack amounts are in Kobo/Cents (Amount * 100)
             const actualAmountPaid = result.data.amount / 100;
 
             if (actualAmountPaid >= expectedAmount) {
-                return res.status(200).json({ 
-                    verified: true, 
-                    data: result.data 
+                return res.status(200).json({
+                    verified: true,
+                    data: result.data
                 });
             } else {
-                return res.status(400).json({ 
-                    verified: false, 
-                    message: "Amount mismatch detected." 
+                return res.status(400).json({
+                    verified: false,
+                    message: "Amount mismatch detected."
                 });
             }
         }
 
-        return res.status(400).json({ verified: false, message: "Transaction not successful." });
+        return res
+            .status(400)
+            .json({ verified: false, message: "Transaction not successful." });
     } catch (error) {
         return res.status(500).json({ message: "Internal Server Error" });
     }
