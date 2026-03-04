@@ -18,6 +18,7 @@ export default async function handler(req, res) {
         );
 
         const result = await response.json();
+        alert("200")
         console.log(result);
 
         if (result.status && result.data.status === "success") {

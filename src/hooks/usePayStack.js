@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
 import { createOrderDetails } from "../utils/createOrderDetails";
 import { createDbDatas } from "../utils/createDbDatas";
 import { initiateCheckout } from "../utils/checkout";
@@ -9,6 +10,7 @@ import { useCart } from "../contexts/cart";
 
 export function usePayStack() {
     const navigate = useNavigate();
+
     const { addOrders } = useFireStore();
     const { dispatch } = useCart();
 
@@ -16,6 +18,10 @@ export function usePayStack() {
         async userDetails => {
             // 1. Generate local order details
             const orderDetails = createOrderDetails({ ...userDetails });
+
+            //--------------------
+            console.log(orderDetails);
+
             const { amount, ref } = orderDetails;
 
             const onClose = () => {
@@ -37,10 +43,9 @@ export function usePayStack() {
                     });
 
                     const verification = await verifyRes.json();
-                    
+
                     console.log(verification);
-                    
-                    
+
                     if (verification.verified) {
                         // 3. Save to Firestore (Server verification passed)
                         const docDatas = createDbDatas(
