@@ -180,8 +180,8 @@ function OrderSummary() {
                         />
                     </div>
 
-                    <div className="py-2 px-4 bg-blue-50 text-blue-70 rounded-md mb-5 print:hidden">
-                        <p className="p-2">
+                    <div className="p-4 bg-blue-50 text-blue-70 rounded-md my-5 print:hidden">
+                        <p>
                             An invoice and tracking details have been sent to{" "}
                             <strong>{email}</strong>.
                         </p>
@@ -189,8 +189,7 @@ function OrderSummary() {
                         <Button
                             action={handlePrint}
                             text="Print Receipt"
-                            type="outline"
-                            btn="secondary"
+                            btn="primary"
                         />
                     </div>
                 </div>
