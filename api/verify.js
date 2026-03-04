@@ -12,13 +12,13 @@ export default async function handler(req, res) {
             {
                 method: "GET",
                 headers: {
-                    Authorization: `Bearer ${process.env.VITE_PAYSTACK_KEY}`
+                    Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
                 }
             }
         );
 
         const result = await response.json();
-        alert("200")
+      
         console.log(result);
 
         if (result.status && result.data.status === "success") {
