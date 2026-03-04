@@ -164,15 +164,10 @@ function OrderSummary() {
                     </div>
                 </div>
                 <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
-                    <Button
-                        onClick={handlePrint}
-                        text="Print Receipt"
-                        type="outline"
-                    />
                     <LinkTo
                         to={`/trackOrder?orderId=${orderId}`}
                         text="Track Order"
-                        type="secondary"
+                        type="primary"
                     />
                     <LinkTo
                         to="/products"
@@ -181,9 +176,17 @@ function OrderSummary() {
                     />
                 </div>
 
-                <div className="py-2 px-4 bg-neutral-700- text-primary-light rounded-md mb-5">
-                    An invoice and tracking details have been sent to{" "}
-                    <strong>{email}</strong>.
+                <div className="py-2 px-4 bg-neutral-700 text-primary-light rounded-md mb-5">
+                    <Button
+                        action={handlePrint}
+                        text="Print Receipt"
+                        type="outline"
+                        btn="secondary"
+                    />
+                    <p>
+                        An invoice and tracking details have been sent to{" "}
+                        <strong>{email}</strong>.
+                    </p>
                 </div>
             </div>
             <span className="print:hidden">
@@ -194,3 +197,12 @@ function OrderSummary() {
 }
 
 export default OrderSummary;
+
+/*
+<LinkTo
+                        to={`/trackOrder?orderId=${orderId}`}
+                        text="Track Order"
+                        type="secondary"
+                    />
+
+*/
