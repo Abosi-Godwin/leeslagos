@@ -27,7 +27,7 @@ const Checkout = () => {
 
     const handleCheckout = userDetails => {
         const { email, fullName, phoneNumber, street, note } = userDetails;
-        
+
         if (!emial || !fullName || !phoneNumber || !street) {
             toast.error("Fill all required fields.");
             return;
@@ -87,7 +87,7 @@ const Checkout = () => {
                         placeholder="Enter your current address..."
                         className="p-3 rounded-md outline-0 border"
                         disable={false}
-                        config={null}
+                        config={{required: "Delivery address is required."}}
                         register={register}
                     />
                     <Input
