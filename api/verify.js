@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     if (req.method !== "POST") return res.status(405).end();
 
     const { reference, expectedAmount } = req.body;
- 
+
     try {
         const response = await fetch(
             `https://api.paystack.co/transaction/verify/${reference}`,

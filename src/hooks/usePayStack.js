@@ -22,8 +22,10 @@ export function usePayStack() {
             //--------------------
             console.log(orderDetails);
 
-            const { amount, ref } = orderDetails;
-console.log(amount);
+            const { amount, subtotal, ref } = orderDetails;
+
+            console.log(amount, subtotal);
+            
             const onClose = () => {
                 toast.error("Payment cancelled.");
             };
@@ -38,7 +40,7 @@ console.log(amount);
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             reference: transaction.reference,
-                            expectedAmount: amount // Safety check
+                            expectedAmount: subtotal // Safety check
                         })
                     });
 

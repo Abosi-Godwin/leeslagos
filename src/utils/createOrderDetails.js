@@ -6,43 +6,43 @@ import { useCart } from "../contexts/cart";
 
 const paystackKey = import.meta.env.VITE_PAYSTACK_KEY;
 
-export const createOrderDetails = (userDetails) => {
-  const {
-    email,
-    fullName,
-    phoneNumber,
-    street,
-    note,
-    subTotal,
-    userId,
-    orderedItems,
-    onSuccess,
-    onClose,
-  } = userDetails;
+export const createOrderDetails = userDetails => {
+    const {
+        email,
+        fullName,
+        phoneNumber,
+        street,
+        note,
+        subTotal,
+        userId,
+        orderedItems,
+        onSuccess,
+        onClose
+    } = userDetails;
 
-  const [firstname, lastname] = fullName.split(" ");
+    const [firstname, lastname] = fullName.split(" ");
 
-  const currentDate = new Date().toLocaleString();
-  
-  return {
-    key: paystackKey,
-    email,
-    amount: subTotal * 100,
-    date: currentDate,
-    ref: uuidv4(),
-    currency: "NGN",
-    firstname,
-    lastname,
-    phone: phoneNumber,
-    label: "Checkout - leesLagos",
-    onSuccess,
-    onClose,
-    metadata: {
-      orderId: uniqid("order-"),
-      customerId: userId,
-      cartItems: orderedItems,
-      shippingAddress: street,
-      extraNotes: note.trim(),
-    },
-  };
+    const currentDate = new Date().toLocaleString();
+
+    return {
+        key: paystackKey,
+        email,
+        amount: subTotal * 100,
+        date: currentDate,
+        ref: uuidv4(),
+        currency: "NGN",
+        firstname,
+        lastname,subTotal,
+        phone: phoneNumber,
+        label: "Checkout - leesLagos",
+        onSuccess,
+        onClose,
+        metadata: {
+            orderId: uniqid("order-"),
+            customerId: userId,
+            cartItems: orderedItems,
+            shippingAddress: street,
+            extraNotes: note.trim()
+        }
+    };
 };
