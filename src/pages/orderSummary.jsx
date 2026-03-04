@@ -27,169 +27,174 @@ function OrderSummary() {
         window.print();
     };
 
-    // Add a check for missing state at the top
-    if (!customerAndOrderDatas) {
-        return (
-            <div className="text-center py-20">
-                No order data found.{" "}
-                <LinkTo to="/products" text="Go Shopping" />
-            </div>
-        );
-    }
     return (
         <>
             <span className="print:hidden">
                 <NavBar />
             </span>
-            <div className="py-10 px-5">
-                <div className="rounded-md bg-gray-100 m-[0_auto] py-8 ">
-                    <div
-                        className="h-32 w-32
+            {!customerAndOrderDatas ? (
+                <div className="text-center py-20">
+                    <p>No order data found.</p>
+                    <div className="w-4/8 py-4 inline-block">
+                        <LinkTo to="/products" text="Go Shopping" />
+                    </div>
+                </div>
+            ) : (
+                <div className="py-10 px-5">
+                    <div className="rounded-md bg-gray-100 m-[0_auto] py-8 ">
+                        <div
+                            className="h-32 w-32
        [clip-path:polygon(50%_0%,83%_12%,100%_43%,94%_78%,68%_100%,32%_100%,6%_78%,0%_43%,17%_12%)]
         bg-white m-[0_auto] flex items-center
         justify-center"
-                    >
-                        <FaCheck className="text-green-500 text-7xl m-[0_auto]" />
+                        >
+                            <FaCheck className="text-green-500 text-7xl m-[0_auto]" />
+                        </div>
+                        <h1 className="m-[0_auto] text-xl font-bold text-center py-4">
+                            Order Placed Successfully!
+                        </h1>
+                        <p className="text-sm tracking-tight text-center">
+                            Thank you for shopping with LeesLagos. Your order
+                            has been received and is now being processed.
+                        </p>
                     </div>
-                    <h1 className="m-[0_auto] text-xl font-bold text-center py-4">
-                        Order Placed Successfully!
-                    </h1>
-                    <p className="text-sm tracking-tight text-center">
-                        Thank you for shopping with LeesLagos. Your order has
-                        been received and is now being processed.
-                    </p>
-                </div>
-                <div className="border-2 border-gray-100 rounded-md p-5 mt-5">
-                    <h1 className="text-xl font-semibold">Order Summary</h1>
-                    <div className="py-3">
-                        <div className="flex">
-                            <h1>
-                                Reference:
-                                <span> {reference}</span>
+                    <div className="border-2 border-gray-100 rounded-md p-5 mt-5">
+                        <h1 className="text-xl font-semibold">Order Summary</h1>
+                        <div className="py-3">
+                            <div className="flex">
+                                <h1>
+                                    Reference:
+                                    <span> {reference}</span>
+                                </h1>
+                            </div>
+                            <div className="flex">
+                                <h1>
+                                    Status:
+                                    <span> {status}</span>
+                                </h1>
+                            </div>
+                            <div className="flex">
+                                <h1>
+                                    Message:
+                                    <span> {message}</span>
+                                </h1>
+                            </div>
+                            <div className="flex">
+                                <h1>
+                                    Date:
+                                    <span> {date}</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <br></br>
+                        <hr></hr>
+                        <br></br>
+
+                        <h1 className="text-xl font-semibold">
+                            Ordered {totalCart >= 2 ? "items" : "item"} (
+                            {totalCart})
+                        </h1>
+
+                        <div className="py-5">
+                            <OrderedItems items={cartItems} />
+
+                            <h1 className="font-bold">
+                                Subtotal:{" "}
+                                <span className="font-normal">
+                                    {formatCurrency(amount / 100)}
+                                </span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Delivery:{" "}
+                                <span className="font-normal"> free</span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Total Paid:{" "}
+                                <span className="font-normal">
+                                    {" "}
+                                    {formatCurrency(amount / 100)}
+                                </span>
                             </h1>
                         </div>
-                        <div className="flex">
-                            <h1>
-                                Status:
-                                <span> {status}</span>
+                        <br></br>
+                        <hr></hr>
+                        <br></br>
+                        <h1 className="text-xl font-semibold">Shipping</h1>
+
+                        <div className="py-5">
+                            <h1 className="font-bold">
+                                Name:{" "}
+                                <span className="font-normal">
+                                    {firstname + " " + lastname}
+                                </span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Order ID:{" "}
+                                <span className="font-normal">{orderId}</span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Phone:{" "}
+                                <span className="font-normal">{phone}</span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Address:{" "}
+                                <span className="font-normal">
+                                    {" "}
+                                    {shippingAddress}
+                                </span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Note:{" "}
+                                <span className="font-normal">
+                                    {" "}
+                                    {extraNotes}
+                                </span>
                             </h1>
                         </div>
-                        <div className="flex">
-                            <h1>
-                                Message:
-                                <span> {message}</span>
+                        <br></br>
+                        <hr></hr>
+                        <br></br>
+                        <h1 className="text-xl font-semibold">Payment</h1>
+
+                        <div className="py-5">
+                            <h1 className="font-bold">
+                                Method:{" "}
+                                <span className="font-normal">PayStack</span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Transaction ID:{" "}
+                                <span className="font-normal">{ref}</span>
                             </h1>
                         </div>
-                        <div className="flex">
-                            <h1>
-                                Date:
-                                <span> {date}</span>
-                            </h1>
-                        </div>
                     </div>
-                    <br></br>
-                    <hr></hr>
-                    <br></br>
-
-                    <h1 className="text-xl font-semibold">
-                        Ordered {totalCart >= 2 ? "items" : "item"} ({totalCart}
-                        )
-                    </h1>
-
-                    <div className="py-5">
-                        <OrderedItems items={cartItems} />
-
-                        <h1 className="font-bold">
-                            Subtotal:{" "}
-                            <span className="font-normal">
-                                {formatCurrency(amount / 100)}
-                            </span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Delivery: <span className="font-normal"> free</span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Total Paid:{" "}
-                            <span className="font-normal">
-                                {" "}
-                                {formatCurrency(amount / 100)}
-                            </span>
-                        </h1>
+                    <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
+                        <LinkTo
+                            to={`/trackOrder?orderId=${orderId}`}
+                            text="Track Order"
+                            type="primary"
+                        />
+                        <LinkTo
+                            to="/products"
+                            text="Continue shopping"
+                            type="secondary"
+                        />
                     </div>
-                    <br></br>
-                    <hr></hr>
-                    <br></br>
-                    <h1 className="text-xl font-semibold">Shipping</h1>
 
-                    <div className="py-5">
-                        <h1 className="font-bold">
-                            Name:{" "}
-                            <span className="font-normal">
-                                {firstname + " " + lastname}
-                            </span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Order ID:{" "}
-                            <span className="font-normal">{orderId}</span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Phone: <span className="font-normal">{phone}</span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Address:{" "}
-                            <span className="font-normal">
-                                {" "}
-                                {shippingAddress}
-                            </span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Note:{" "}
-                            <span className="font-normal"> {extraNotes}</span>
-                        </h1>
-                    </div>
-                    <br></br>
-                    <hr></hr>
-                    <br></br>
-                    <h1 className="text-xl font-semibold">Payment</h1>
+                    <div className="py-2 px-4 bg-blue-50 text-blue-70 rounded-md mb-5">
+                        <p className="p-2">
+                            An invoice and tracking details have been sent to{" "}
+                            <strong>{email}</strong>.
+                        </p>
 
-                    <div className="py-5">
-                        <h1 className="font-bold">
-                            Method:{" "}
-                            <span className="font-normal">PayStack</span>
-                        </h1>
-                        <h1 className="font-bold">
-                            Transaction ID:{" "}
-                            <span className="font-normal">{ref}</span>
-                        </h1>
+                        <Button
+                            action={handlePrint}
+                            text="Print Receipt"
+                            type="outline"
+                            btn="secondary"
+                        />
                     </div>
                 </div>
-                <div className="py-4 grid grid-cols-1  justify-between gap-4 items-center">
-                    <LinkTo
-                        to={`/trackOrder?orderId=${orderId}`}
-                        text="Track Order"
-                        type="primary"
-                    />
-                    <LinkTo
-                        to="/products"
-                        text="Continue shopping"
-                        type="secondary"
-                    />
-                </div>
-
-                <div className="py-2 px-4 bg-blue-50 text-blue-70 rounded-md mb-5">
-                    <p className="p-2">
-                        An invoice and tracking details have been sent to{" "}
-                        <strong>{email}</strong>.
-                    </p>
-
-                    <Button
-                        action={handlePrint}
-                        text="Print Receipt"
-                        type="outline"
-                        btn="secondary"
-                    />
-                </div>
-            </div>
+            )}
             <span className="print:hidden">
                 <Footer />
             </span>

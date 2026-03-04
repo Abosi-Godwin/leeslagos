@@ -1,5 +1,3 @@
-import { useForm } from "react-hook-form";
-
 import InputLabel from "./inputLabel";
 
 export default function Input({
@@ -12,8 +10,8 @@ export default function Input({
     defaultVal,
     onHidePassword,
     className,
-    register,
-    config
+    register,errors,
+    config // <-- Your validation rules
 }) {
     return (
         <>
@@ -31,8 +29,14 @@ export default function Input({
                 disabled={disable}
                 className={className}
                 defaultValue={defaultVal}
-                {...register(valType, config)}
+                /* Pass the config object as the second argument to register! */
+                {...register(valType, config || {})}
             />
+            {errors?.[valType] && (
+                <span className="text-red-500 text-xs mt-1">
+                    {errors[valType]?.message}
+                </span>
+            )}
         </>
     );
 }

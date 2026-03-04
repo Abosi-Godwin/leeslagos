@@ -17,7 +17,7 @@ const Checkout = () => {
     const {
         register,
         handleSubmit,
-        formState: { error }
+        formState: { errors }
     } = useForm();
 
     const { auth } = useAuth();
@@ -28,7 +28,7 @@ const Checkout = () => {
     const handleCheckout = userDetails => {
         const { email, fullName, phoneNumber, street, note } = userDetails;
 
-        if (!emial || !fullName || !phoneNumber || !street) {
+        if (!email || !fullName || !phoneNumber || !street) {
             toast.error("Fill all required fields.");
             return;
         }
@@ -61,6 +61,7 @@ const Checkout = () => {
                         defaultVal={displayName}
                         disable={false}
                         config={null}
+                        errors={errors}
                         register={register}
                     />
                     <Input
@@ -70,6 +71,7 @@ const Checkout = () => {
                         placeholder="Enter your email address..."
                         className="p-3 rounded-md outline-0 border"
                         disable={false}
+                        errors={errors}
                         config={{
                             required: "Required",
                             pattern: {
@@ -87,16 +89,18 @@ const Checkout = () => {
                         placeholder="Enter your current address..."
                         className="p-3 rounded-md outline-0 border"
                         disable={false}
-                        config={{required: "Delivery address is required."}}
+                        errors={errors}
+                        config={{ required: "Delivery address is required." }}
                         register={register}
                     />
                     <Input
-                        label="Phone Number"
+                        label="Phone Number *"
                         valType="phoneNumber"
                         inputType="number"
                         placeholder="Enter your phone number..."
                         className="p-3 rounded-md outline-0 border"
                         disable={false}
+                        errors={errors}
                         config={{
                             required: "Phone number is required",
                             pattern: {
