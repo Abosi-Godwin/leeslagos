@@ -14,7 +14,7 @@ const sendReceipt = async (req, res) => {
 
     try {
         const { details } = req.body;
-console.log(details);
+        console.log(details);
         // 2. Validate the incoming data to prevent crashes
         if (!details || !details.email || !details.id) {
             return res
@@ -24,8 +24,7 @@ console.log(details);
 
         const msg = {
             to: details.email,
-            // 3. IMPORTANT: Use a verified sender domain, not a @gmail.com address
-            from: "verified-sender@yourdomain.com",
+            from: "bbnl6060@gmail.com",
             subject: `Receipt for #${details.id}`,
             text: "Your order was successful",
             html: "<strong>Your order was successful</strong>"

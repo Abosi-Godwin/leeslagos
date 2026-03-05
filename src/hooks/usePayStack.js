@@ -25,7 +25,7 @@ export function usePayStack() {
             };
 
             const onSuccess = async transaction => {
-                console.log(transaction);
+            
                 const loadingToast = toast.loading("Verifying transaction...");
 
                 try {
@@ -67,10 +67,11 @@ export function usePayStack() {
                         console.error("Background Receipt Error:", err)
                     );
 
-                    navigate("/orderSummary", {
+                    navigate(`/orderSummary${transaction.redirecturl}}`, {
                         state: {
                             reference: transaction.reference,
-                            status: "success",
+                            status: transaction.status,
+                            message: transaction.message,
                             customerAndOrderDatas: orderDetails
                         }
                     });

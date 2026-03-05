@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 const ReceiptPDF = ({ data }) => {
-    console.log(data);
+   // console.log("data", data);
     return (
         <Document>
             <Page size="A4" style={styles.page}>
