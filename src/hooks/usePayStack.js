@@ -1,4 +1,4 @@
- import { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { createOrderDetails } from "../utils/createOrderDetails";
@@ -14,7 +14,7 @@ export function usePayStack() {
     const [isProcessing, setIsProcessing] = useState(false);
 
     const checkoutOrderFun = useCallback(
-        async (userDetails) => {
+        async userDetails => {
             setIsProcessing(true);
             const orderDetails = createOrderDetails({ ...userDetails });
             const { subTotal } = orderDetails;
@@ -24,7 +24,8 @@ export function usePayStack() {
                 toast.error("Payment cancelled.");
             };
 
-            const onSuccess = async (transaction) => {
+            const onSuccess = async transaction => {
+                console.log(transaction);
                 const loadingToast = toast.loading("Verifying transaction...");
 
                 try {
@@ -34,14 +35,17 @@ export function usePayStack() {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             reference: transaction.reference,
-                            expectedAmount: subTotal 
+                            expectedAmount: subTotal
                         })
                     });
 
                     const verification = await verifyRes.json();
 
-                    if (!verifyRes.ok || !verification.success) {
-                        throw new Error(verification.message || "Payment verification failed.");
+                    if (!verification.ok || !verification.success) {
+                        throw new Error(
+                            verification.message ||
+                                "Payment verification failed."
+                        );
                     }
 
                     // 2. Save to Firestore
@@ -50,14 +54,18 @@ export function usePayStack() {
 
                     // 3. Cleanup & Navigation
                     dispatch({ type: "clear" });
-                    toast.success("Order placed successfully!", { id: loadingToast });
-                    
+                    toast.success("Order placed successfully!", {
+                        id: loadingToast
+                    });
+
                     // Fire-and-forget receipt (don't block the UI)
                     fetch("/api/sendReceipt", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ details: transaction })
-                    }).catch(err => console.error("Background Receipt Error:", err));
+                    }).catch(err =>
+                        console.error("Background Receipt Error:", err)
+                    );
 
                     navigate("/orderSummary", {
                         state: {
