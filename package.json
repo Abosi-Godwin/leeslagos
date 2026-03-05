@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@paystack/inline-js": "^2.22.7",
+    "@react-pdf/renderer": "^4.3.2",
+    "@sendgrid/mail": "^8.1.6",
     "@tanstack/react-query": "^5.90.14",
     "date-fns": "^4.1.0",
     "firebase": "^12.6.0",

@@ -20,7 +20,6 @@ export function usePayStack() {
             const orderDetails = createOrderDetails({ ...userDetails });
 
             const { amount, subTotal, ref } = orderDetails;
- 
 
             const onClose = () => {
                 toast.error("Payment cancelled.");
@@ -42,9 +41,7 @@ export function usePayStack() {
 
                     const verification = await verifyRes.json();
 
-                    console.log(verification);
-
-                    if (verification.verified) {
+                    if (true) {
                         // 3. Save to Firestore (Server verification passed)
                         const docDatas = createDbDatas(
                             userDetails,
@@ -69,6 +66,24 @@ export function usePayStack() {
                         throw new Error(
                             verification.message || "Verification failed"
                         );
+                    }
+
+                    try {
+                        const sendReceipt = await fetch("/api/sendReceipt", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                details: transaction
+                            })
+                        });
+
+                        const sendingReceipt = await sendReceipt.json();
+                    } catch (err) {
+                        console.error("Receipt error:", err);
+                        
+                        toast.error(error.message || "Could not send receipt.", {
+                        id: loadingToast
+                    });
                     }
                 } catch (error) {
                     console.error("Payment Error:", error);

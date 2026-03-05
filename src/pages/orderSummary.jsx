@@ -1,6 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
 
+import { PDFDownloadLink } from "@react-pdf/renderer";
+
 import { formatCurrency } from "../utils/currencyFormater";
 
 import NavBar from "../components/navBar";
@@ -8,6 +10,8 @@ import LinkTo from "../components/link";
 import Footer from "../sections/footer";
 import Button from "../components/button";
 import OrderedItems from "../components/orderedItems";
+
+import ReceiptPDF from "../assets/ReceiptPdf";
 
 function OrderSummary() {
     const location = useLocation();
@@ -22,10 +26,6 @@ function OrderSummary() {
         metadata || {};
 
     const totalCart = cartItems?.length || [];
-
-    const handlePrint = () => {
-        window.print();
-    };
 
     return (
         <>
@@ -97,24 +97,6 @@ function OrderSummary() {
 
                         <div className="py-5">
                             <OrderedItems items={cartItems} />
-
-                            <h1 className="font-bold">
-                                Subtotal:{" "}
-                                <span className="font-normal">
-                                    {formatCurrency(amount / 100)}
-                                </span>
-                            </h1>
-                            <h1 className="font-bold">
-                                Delivery:{" "}
-                                <span className="font-normal"> free</span>
-                            </h1>
-                            <h1 className="font-bold">
-                                Total Paid:{" "}
-                                <span className="font-normal">
-                                    {" "}
-                                    {formatCurrency(amount / 100)}
-                                </span>
-                            </h1>
                         </div>
                         <br></br>
                         <hr></hr>
@@ -158,6 +140,23 @@ function OrderSummary() {
 
                         <div className="py-5">
                             <h1 className="font-bold">
+                                Subtotal:{" "}
+                                <span className="font-normal">
+                                    {formatCurrency(amount / 100)}
+                                </span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Delivery:{" "}
+                                <span className="font-normal"> free</span>
+                            </h1>
+                            <h1 className="font-bold">
+                                Total Paid:{" "}
+                                <span className="font-normal">
+                                    {" "}
+                                    {formatCurrency(amount / 100)}
+                                </span>
+                            </h1>
+                            <h1 className="font-bold">
                                 Method:{" "}
                                 <span className="font-normal">PayStack</span>
                             </h1>
@@ -180,17 +179,28 @@ function OrderSummary() {
                         />
                     </div>
 
-                    <div className="p-4 bg-blue-50 text-blue-70 rounded-md my-5 print:hidden">
-                        <p>
+                    <div
+                        className="p-4 bg-neutral-700 text-neutral-50
+                    rounded-md my-14 print:hidden"
+                    >
+                        <p className="mb-2">
                             An invoice and tracking details have been sent to{" "}
                             <strong>{email}</strong>.
                         </p>
-
-                        <Button
-                            action={handlePrint}
-                            text="Print Receipt"
-                            btn="primary"
-                        />
+                         
+                        <PDFDownloadLink
+                            document={
+                                <ReceiptPDF data={customerAndOrderDatas} />
+                            }
+                            fileName={`receipt_${orderId}.pdf`}
+                            className="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-lg"
+                        >
+                            {({ loading }) =>
+                                loading
+                                    ? "Generating receipt..."
+                                    : "Download Receipt (PDF)"
+                            }
+                        </PDFDownloadLink>
                     </div>
                 </div>
             )}
