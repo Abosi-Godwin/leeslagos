@@ -1,7 +1,6 @@
-import { useCallback } from "react";
+ import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 import { createOrderDetails } from "../utils/createOrderDetails";
 import { createDbDatas } from "../utils/createDbDatas";
 import { initiateCheckout } from "../utils/checkout";
@@ -10,101 +9,75 @@ import { useCart } from "../contexts/cart";
 
 export function usePayStack() {
     const navigate = useNavigate();
-
     const { addOrders } = useFireStore();
     const { dispatch } = useCart();
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const checkoutOrderFun = useCallback(
-        async userDetails => {
-            // 1. Generate local order details
+        async (userDetails) => {
+            setIsProcessing(true);
             const orderDetails = createOrderDetails({ ...userDetails });
-
-            const { amount, subTotal, ref } = orderDetails;
+            const { subTotal } = orderDetails;
 
             const onClose = () => {
+                setIsProcessing(false);
                 toast.error("Payment cancelled.");
             };
 
-            const onSuccess = async transaction => {
+            const onSuccess = async (transaction) => {
                 const loadingToast = toast.loading("Verifying transaction...");
 
                 try {
-                    // 2. Verify with Vercel Serverless Function
+                    // 1. Server-side Verification
                     const verifyRes = await fetch("/api/verify", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             reference: transaction.reference,
-                            expectedAmount: subTotal // Safety check
+                            expectedAmount: subTotal 
                         })
                     });
 
                     const verification = await verifyRes.json();
 
-                    if (verification) {
-                        // 3. Save to Firestore (Server verification passed)
-                        const docDatas = createDbDatas(
-                            userDetails,
-                            orderDetails
-                        );
-                        await addOrders(docDatas);
-
-                        // 4. Update UI state
-                        dispatch({ type: "clear" });
-                        toast.success("Order placed successfully!", {
-                            id: loadingToast
-                        });
-
-                        navigate("/orderSummary", {
-                            state: {
-                                reference: transaction.reference,
-                                status: "success",
-                                customerAndOrderDatas: orderDetails
-                            }
-                        });
-                    } else {
-                        throw new Error(
-                            verification.message || "Verification failed"
-                        );
+                    if (!verifyRes.ok || !verification.success) {
+                        throw new Error(verification.message || "Payment verification failed.");
                     }
 
-                    try {
-                        const sendReceipt = await fetch("/api/sendReceipt", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                details: transaction
-                            })
-                        });
-                        const sendingReceipt = await sendReceipt.json();
-                        console.log(sendingReceipt);
-                    } catch (err) {
-                        console.error("Receipt error:", err);
+                    // 2. Save to Firestore
+                    const docDatas = createDbDatas(userDetails, orderDetails);
+                    await addOrders(docDatas);
 
-                        toast.error(
-                            error.message || "Could not send receipt.",
-                            {
-                                id: loadingToast
-                            }
-                        );
-                    }
-                } catch (error) {
-                    console.error("Payment Error:", error);
-                    toast.error(error.message || "Could not verify payment.", {
-                        id: loadingToast
+                    // 3. Cleanup & Navigation
+                    dispatch({ type: "clear" });
+                    toast.success("Order placed successfully!", { id: loadingToast });
+                    
+                    // Fire-and-forget receipt (don't block the UI)
+                    fetch("/api/sendReceipt", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ details: transaction })
+                    }).catch(err => console.error("Background Receipt Error:", err));
+
+                    navigate("/orderSummary", {
+                        state: {
+                            reference: transaction.reference,
+                            status: "success",
+                            customerAndOrderDatas: orderDetails
+                        }
                     });
+                } catch (error) {
+                    console.error("Post-Payment Error:", error);
+                    toast.error(error.message, { id: loadingToast });
+                } finally {
+                    setIsProcessing(false);
                 }
             };
 
-            // 5. Trigger Paystack Modal
-            initiateCheckout({
-                ...orderDetails,
-                onSuccess,
-                onClose
-            });
+            initiateCheckout({ ...orderDetails, onSuccess, onClose });
         },
         [navigate, addOrders, dispatch]
     );
 
-    return { checkoutOrderFun };
+    return { checkoutOrderFun, isProcessing };
 }
