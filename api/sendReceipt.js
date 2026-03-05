@@ -14,7 +14,7 @@ const sendReceipt = async (req, res) => {
 
     try {
         const { details } = req.body;
-
+console.log(details);
         // 2. Validate the incoming data to prevent crashes
         if (!details || !details.email || !details.id) {
             return res

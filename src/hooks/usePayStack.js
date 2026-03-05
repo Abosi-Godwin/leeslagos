@@ -41,7 +41,7 @@ export function usePayStack() {
 
                     const verification = await verifyRes.json();
 
-                    if (true) {
+                    if (verification) {
                         // 3. Save to Firestore (Server verification passed)
                         const docDatas = createDbDatas(
                             userDetails,
@@ -76,14 +76,17 @@ export function usePayStack() {
                                 details: transaction
                             })
                         });
-
                         const sendingReceipt = await sendReceipt.json();
+                        console.log(sendingReceipt);
                     } catch (err) {
                         console.error("Receipt error:", err);
-                        
-                        toast.error(error.message || "Could not send receipt.", {
-                        id: loadingToast
-                    });
+
+                        toast.error(
+                            error.message || "Could not send receipt.",
+                            {
+                                id: loadingToast
+                            }
+                        );
                     }
                 } catch (error) {
                     console.error("Payment Error:", error);

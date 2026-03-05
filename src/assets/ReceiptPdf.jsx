@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 const ReceiptPDF = ({ data }) => {
-    console.log("data", data);
+     
 
     return (
         <Document>
