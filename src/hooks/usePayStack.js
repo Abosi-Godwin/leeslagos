@@ -25,7 +25,6 @@ export function usePayStack() {
             };
 
             const onSuccess = async transaction => {
-            
                 const loadingToast = toast.loading("Verifying transaction...");
 
                 try {
@@ -41,7 +40,7 @@ export function usePayStack() {
 
                     const verification = await verifyRes.json();
 
-                    if (!verification.ok || !verification.success) {
+                    if (true) {
                         throw new Error(
                             verification.message ||
                                 "Payment verification failed."
