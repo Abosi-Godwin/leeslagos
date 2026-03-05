@@ -8,6 +8,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendReceipt = async (req, res) => {
     // 1. Return a clear error message for wrong methods
+    console.log(req);
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
     }
