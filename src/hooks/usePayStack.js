@@ -17,6 +17,7 @@ export function usePayStack() {
         async userDetails => {
             setIsProcessing(true);
             const orderDetails = createOrderDetails({ ...userDetails });
+
             const { subTotal } = orderDetails;
 
             const onClose = () => {
@@ -64,8 +65,9 @@ export function usePayStack() {
                     fetch("/api/sendReceipt", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ details: { ...transaction,
-                        ...userDetails } })
+                        body: JSON.stringify({
+                            details: { ...transaction, ...docDatas }
+                        })
                     }).catch(err =>
                         console.error("Background Receipt Error:", err)
                     );

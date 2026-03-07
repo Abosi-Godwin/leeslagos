@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
      
             if (actualAmountPaid >= expectedAmount) {
-              console.log("correct amount paid");
+              
                 return res.status(200).json({
                     verified: true,
                     data: result.data

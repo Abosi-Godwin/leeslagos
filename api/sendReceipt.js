@@ -6,7 +6,6 @@ if (!process.env.SENDGRID_API_KEY) {
 }
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-
 /*
 {
   reference: '6cbd38a5-fb09-4fab-9e2f-ca24c2abd2c4',
