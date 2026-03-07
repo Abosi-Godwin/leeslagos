@@ -8,7 +8,7 @@ import ReceiptPDF from "../src/assets/ReceiptPdf";
 // Set SendGrid API Key
 if (!process.env.SENDGRID_API_KEY) {
     console.error("SENDGRID_API_KEY is missing!");
-    return;
+    
 }
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -31,10 +31,9 @@ const sendReceipt = async (req, res) => {
         const pdfBuffer = await renderToBuffer(
             React.createElement(ReceiptPDF, { data: details })
         );
-        
+
         console.log("PDF Buffer size:", pdfBuffer.length);
-        
-        
+
         // 2️⃣ Convert buffer to Base64 for SendGrid
         const pdfBase64 = pdfBuffer.toString("base64");
         console.log(pdfBase64.substring(0, 50));
