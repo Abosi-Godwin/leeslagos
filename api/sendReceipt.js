@@ -1,3 +1,5 @@
+import React from "react";
+
 import sgMail from "@sendgrid/mail";
 
 import { renderToBuffer } from "@react-pdf/renderer";
@@ -6,6 +8,7 @@ import ReceiptPDF from "../src/assets/ReceiptPdf";
 // Set SendGrid API Key
 if (!process.env.SENDGRID_API_KEY) {
     console.error("SENDGRID_API_KEY is missing!");
+    return;
 }
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -25,11 +28,16 @@ const sendReceipt = async (req, res) => {
         }
 
         // 1️⃣ Generate PDF buffer dynamically
-        const pdfBuffer = await renderToBuffer(<ReceiptPDF data={details} />);
-console.log("PDF Buffer size:", pdfBuffer.length);
+        const pdfBuffer = await renderToBuffer(
+            React.createElement(ReceiptPDF, { data: details })
+        );
+        
+        console.log("PDF Buffer size:", pdfBuffer.length);
+        
+        
         // 2️⃣ Convert buffer to Base64 for SendGrid
         const pdfBase64 = pdfBuffer.toString("base64");
-console.log(pdfBase64.substring(0, 50));
+        console.log(pdfBase64.substring(0, 50));
         const trackingUrl = `https://leeslagos.vercel.app/trackOrder?orderId=${details.orderId}`;
 
         // 3️⃣ Build email message with PDF attachment
