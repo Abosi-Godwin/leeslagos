@@ -26,17 +26,17 @@ const sendReceipt = async (req, res) => {
 
         // 1️⃣ Generate PDF buffer dynamically
         const pdfBuffer = await renderToBuffer(<ReceiptPDF data={details} />);
-
+console.log("PDF Buffer size:", pdfBuffer.length);
         // 2️⃣ Convert buffer to Base64 for SendGrid
         const pdfBase64 = pdfBuffer.toString("base64");
-
+console.log(pdfBase64.substring(0, 50));
         const trackingUrl = `https://leeslagos.vercel.app/trackOrder?orderId=${details.orderId}`;
 
         // 3️⃣ Build email message with PDF attachment
         const msg = {
             to: details.email,
             from: "bbnl6060@gmail.com", // ideally use your domain email
-            subject: `Official Receipt — Order #${details.orderId}`,
+            subject: `Your Receipt for — Order #${details.orderId}`,
             text: `Hello ${details.fullName},\n\nYour payment has been confirmed! Please see attached receipt.`,
             html: `<p>Hello <strong>${details.fullName}</strong>,</p>
                    <p>Your payment has been confirmed! Please see attached receipt.</p>
