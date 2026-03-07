@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 const ReceiptPDF = ({ data }) => {
-   // console.log("data", data);
+    console.log("pdf data", data);
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -84,7 +84,7 @@ const ReceiptPDF = ({ data }) => {
                             <Text>
                                 {item.name} x {item.quantity}
                             </Text>
-                            <Text>${item.price.toFixed(2)}</Text>
+                            <Text>${item.price?.toFixed(2)}</Text>
                         </View>
                     ))}
                 </View>
@@ -101,7 +101,7 @@ const ReceiptPDF = ({ data }) => {
                             color: "#2E7D32"
                         }}
                     >
-                        ${data.total.toFixed(2)}
+                        ${data?.total?.toFixed(2)}
                     </Text>
                 </View>
 
