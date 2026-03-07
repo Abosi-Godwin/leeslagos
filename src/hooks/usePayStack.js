@@ -40,7 +40,7 @@ export function usePayStack() {
 
                     const verification = await verifyRes.json();
 
-                    if (true) {
+                    if (false) {
                         throw new Error(
                             verification.message ||
                                 "Payment verification failed."
