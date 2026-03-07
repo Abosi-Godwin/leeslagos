@@ -59,7 +59,7 @@ const sendReceipt = async (req, res) => {
         const { details } = req.body;
         console.log(details);
         // 2. Validate the incoming data to prevent crashes
-        if (!details || !details.email || !details.id) {
+        if (!details) {
             return res
                 .status(400)
                 .json({ error: "Missing required details (email or id)" });
