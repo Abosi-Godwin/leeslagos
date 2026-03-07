@@ -39,8 +39,11 @@ export function usePayStack() {
                     });
 
                     const verification = await verifyRes.json();
-console.log(verification);
-                    if (false) {
+
+                    if (
+                        !verification?.verified ||
+                        verification?.data?.status != "success"
+                    ) {
                         throw new Error(
                             verification.message ||
                                 "Payment verification failed."
@@ -61,7 +64,8 @@ console.log(verification);
                     fetch("/api/sendReceipt", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ details: transaction })
+                        body: JSON.stringify({ details: { ...transaction,
+                        ...userDetails } })
                     }).catch(err =>
                         console.error("Background Receipt Error:", err)
                     );

@@ -6,9 +6,21 @@ if (!process.env.SENDGRID_API_KEY) {
 }
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+
+/*
+{
+  reference: '6cbd38a5-fb09-4fab-9e2f-ca24c2abd2c4',
+  trans: '5911671179',
+  status: 'success',
+  message: 'Approved',
+  transaction: '5911671179',
+  trxref: '6cbd38a5-fb09-4fab-9e2f-ca24c2abd2c4',
+  redirecturl: '?trxref=6cbd38a5-fb09-4fab-9e2f-ca24c2abd2c4&reference=6cbd38a5-fb09-4fab-9e2f-ca24c2abd2c4'
+}
+*/
 const sendReceipt = async (req, res) => {
     // 1. Return a clear error message for wrong methods
-    console.log(req);
+
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
     }
@@ -30,7 +42,7 @@ const sendReceipt = async (req, res) => {
             text: "Your order was successful",
             html: "<strong>Your order was successful</strong>"
         };
-
+        console.log(msg);
         // 4. Await the send operation
         await sgMail.send(msg);
 
