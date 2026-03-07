@@ -39,7 +39,7 @@ export function usePayStack() {
                     });
 
                     const verification = await verifyRes.json();
-
+console.log(verification);
                     if (false) {
                         throw new Error(
                             verification.message ||
