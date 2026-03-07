@@ -178,30 +178,6 @@ function OrderSummary() {
                             type="secondary"
                         />
                     </div>
-
-                    <div
-                        className="p-4 bg-neutral-700 text-neutral-50
-                    rounded-md my-14 print:hidden"
-                    >
-                        <p className="mb-2">
-                            An invoice and tracking details have been sent to{" "}
-                            <strong>{email}</strong>.
-                        </p>
-                         
-                        <PDFDownloadLink
-                            document={
-                                <ReceiptPDF data={customerAndOrderDatas} />
-                            }
-                            fileName={`receipt_${orderId}.pdf`}
-                            className="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-lg"
-                        >
-                            {({ loading }) =>
-                                loading
-                                    ? "Generating receipt..."
-                                    : "Download Receipt (PDF)"
-                            }
-                        </PDFDownloadLink>
-                    </div>
                 </div>
             )}
             <span className="print:hidden">
