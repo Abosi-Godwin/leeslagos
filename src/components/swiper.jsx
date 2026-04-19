@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 
 import { Link } from "react-router-dom";
- 
+
 const HeroImage = ({ data, index }) => {
     return (
         <div
@@ -55,7 +55,7 @@ const HeroImage = ({ data, index }) => {
                     <Link
                         to={data.link}
                         className="py-2 px-4 rounded-md w-full font-bold outline-none
-            border-0 bg-primary-normal text-white"
+            border-0 bg-primary-normal text-white md:w-fit"
                     >
                         {data.cta}
                     </Link>
