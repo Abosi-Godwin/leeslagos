@@ -13,7 +13,6 @@ import { fireStore } from "../firebase/config";
 const ordersCollection = collection(fireStore, "orders");
 
 const fetchUserOrdersApi = async userId => {
-    
     const q = query(ordersCollection, where("userId", "==", userId));
 
     const snapshot = await getDocs(q);

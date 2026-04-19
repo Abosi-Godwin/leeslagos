@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 
 import { logInApi } from "../auth/login";
+import { signInWithGoogleAPI } from "../auth/signInWithGoogle";
 
 import Footer from "../sections/footer";
 import NavBar from "../components/navBar";
@@ -33,6 +34,11 @@ const Login = () => {
     const handleHidePassword = () => {
         setHidePassword(prev => !prev);
     };
+
+    const handleGoogleSignIn = async () => {
+      
+        signInWithGoogleAPI();
+    };
     return (
         <>
             <NavBar />
@@ -49,8 +55,10 @@ const Login = () => {
 
                     <form onSubmit={handleSubmit(handleLogin)}>
                         {formError && (
-                            <p className="text-red-500 text-center font-bold
-                            capitalize">
+                            <p
+                                className="text-red-500 text-center font-bold
+                            capitalize"
+                            >
                                 {formError}
                             </p>
                         )}
@@ -112,7 +120,7 @@ const Login = () => {
                             bg-light-dividers"
                             ></div>
                         </div>
-                        <GoogleBtn />
+                        <GoogleBtn onLogin={handleGoogleSignIn} />
                         <div className="flex gap-5 items-center">
                             <p>Not a member yet?</p>
                             <Link
